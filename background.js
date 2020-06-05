@@ -1,17 +1,22 @@
-var timed = {'www.google.com': 1000};
+var timed = {'www.google.com': 3};
 var blocked = new Set();
 var activeHostname;
 var time;
 
 // update time
 function updateTimer() {
+    if (blocked.has(activeHostname)) {
+        chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
+            chrome.tabs.update(tab.id, {url: "blocked.html"});
+        });
+    }
+
     time = "";
     if (activeHostname in timed) {
         if (timed[activeHostname] == 0) {
             alert(`Ran out of time at ${activeHostname}`);
             delete timed[activeHostname];
             blocked.add(activeHostname);
-            alert(activeHostname);
         } else {
             timed[activeHostname]--;
             time = formatTime(timed[activeHostname]);
@@ -42,7 +47,6 @@ function getActiveHostname() {
             var currentUrl = tabs[0].url;
             var hostname = (new URL(currentUrl)).hostname;
             updateActiveHostname(hostname);
-            return hostname;
         }
     );
 }
