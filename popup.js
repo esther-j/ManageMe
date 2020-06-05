@@ -1,23 +1,16 @@
-var currentHostname;
+var background = chrome.extension.getBackgroundPage();
 
+// update hostname and time in popup html every 500ms
 function updatePopup() {
-    var port = chrome.extension.connect({
-
-    });
-    port.postMessage("Hi BackGround");
-    port.onMessage.addListener((msg) => {
-        if (msg.hostname != currentHostname) {
-            document.getElementById("hostname").innerHTML = msg.hostname;
-            currentHostname = msg.hostname;
-        }
-        var post = document.getElementById("here");
-        post.innerHTML = msg.time;
-        console.log("message recieved" + msg);
-    });
-    setTimeout(updatePopup, 1000);
+    if (background.time) {
+        document.getElementById("time").innerHTML = background.time;
+    }
+    if (background.activeHostname) {
+        document.getElementById("hostname").innerHTML = background.activeHostname;
+    }
+    setTimeout(updatePopup, 500);
 }
 
 document.addEventListener("DOMContentLoaded", function(event) { 
     updatePopup();
-
 });
