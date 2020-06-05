@@ -2,7 +2,7 @@
     "name": "ManageMe",
     "version": "1.0",
     "manifest_version": 2,
-    "description": "Time manage how long you spend on websites",
+    "description": "Limit daily time spent on websites",
     "permissions": ["tabs"],
     "background": {
         "scripts": ["background.js"]

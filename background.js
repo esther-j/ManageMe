@@ -1,18 +1,20 @@
-var blocked = {'www.google.com': 10};
+var timed = {'www.google.com': 1000};
+var blocked = new Set();
 var activeHostname;
 var time;
 
 // update time
 function updateTimer() {
     time = "";
-    if (activeHostname in blocked) {
-        if (blocked[activeHostname] == 0) {
+    if (activeHostname in timed) {
+        if (timed[activeHostname] == 0) {
             alert(`Ran out of time at ${activeHostname}`);
-            delete blocked[activeHostname];
-            
+            delete timed[activeHostname];
+            blocked.add(activeHostname);
+            alert(activeHostname);
         } else {
-            blocked[activeHostname]--;
-            time = formatTime(blocked[activeHostname]);
+            timed[activeHostname]--;
+            time = formatTime(timed[activeHostname]);
         }
     }
 }

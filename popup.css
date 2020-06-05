@@ -1,0 +1,38 @@
+html, body {
+	margin-left: 0px !important;
+	margin-right: 0px !important;
+	width: 250px;
+}
+
+img {
+	display: block;
+}
+
+hr {
+	width: 80%;
+}
+
+.horizontal-center {
+	margin-left: auto;
+	margin-right: auto;
+}
+
+#hostname {
+	font-size: 14px;
+	text-align: center;
+}
+
+#time {
+	padding: 10px 20px 10px 20px;
+	background-color: #E3E3E3;
+	border-radius: 10px;
+	font-family: 'Roboto Mono';
+	font-size: 20px;
+}
+
+#time-block {
+	display: flex;
+	justify-content: center;
+	margin-top: 10px;
+	margin-bottom: 5px;
+}
