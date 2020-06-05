@@ -3,7 +3,7 @@
     "version": "1.0",
     "manifest_version": 2,
     "description": "Limit daily time spent on websites",
-    "permissions": ["tabs"],
+    "permissions": ["tabs", "alarms"],
     "background": {
         "scripts": ["background.js"]
     },

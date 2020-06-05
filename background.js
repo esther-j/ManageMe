@@ -1,4 +1,5 @@
-var timed = {'www.google.com': 3};
+var timers = {'www.google.com': 10};
+var originalTimers = {'www.google.com': 10};
 var blocked = new Set();
 var activeHostname;
 var time;
@@ -12,14 +13,14 @@ function updateTimer() {
     }
 
     time = "";
-    if (activeHostname in timed) {
-        if (timed[activeHostname] == 0) {
+    if (activeHostname in timers) {
+        if (timers[activeHostname] == 0) {
             alert(`Ran out of time at ${activeHostname}`);
-            delete timed[activeHostname];
+            delete timers[activeHostname];
             blocked.add(activeHostname);
         } else {
-            timed[activeHostname]--;
-            time = formatTime(timed[activeHostname]);
+            timers[activeHostname]--;
+            time = formatTime(timers[activeHostname]);
         }
     }
 }
@@ -51,11 +52,6 @@ function getActiveHostname() {
     );
 }
 
-// update timer every 1s
-document.addEventListener("DOMContentLoaded", function(event) { 
-    setInterval(updateTimer, 1000);
-});
-
 function updateActiveHostname(hostname) {
     activeHostname = hostname;
 }
@@ -76,4 +72,26 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 // listener for when installed
 chrome.runtime.onInstalled.addListener((details) => {
     getActiveHostname();
+});
+
+function createMidnightAlarm() {
+    var midnight = new Date();
+    midnight.setHours(24, 0, 0, 0);
+    midnight = midnight.getTime();
+    chrome.alarms.create({when: midnight});
+}
+
+chrome.alarms.onAlarm.addListener(() => {
+    alert("alarm");
+    timers = originalTimers;
+    chrome.alarms.clearAll(() => {
+        createMidnightAlarm();
+    });
+})
+
+
+// update timer every 1s
+document.addEventListener("DOMContentLoaded", function(event) { 
+    createMidnightAlarm();
+    setInterval(updateTimer, 1000);
 });
