@@ -1,5 +1,5 @@
-var timers = {'www.google.com': 10};
-var originalTimers = {'www.google.com': 10};
+var timers = {'www.google.com': 1000};
+var originalTimers = {'www.google.com': 1000};
 var blocked = new Set();
 var activeHostname;
 var time;
@@ -74,6 +74,7 @@ chrome.runtime.onInstalled.addListener((details) => {
     getActiveHostname();
 });
 
+// makes an alarm for midnight
 function createMidnightAlarm() {
     var midnight = new Date();
     midnight.setHours(24, 0, 0, 0);
@@ -81,6 +82,7 @@ function createMidnightAlarm() {
     chrome.alarms.create({when: midnight});
 }
 
+// listens for alarm and resets it for next midnight
 chrome.alarms.onAlarm.addListener(() => {
     alert("alarm");
     timers = originalTimers;
@@ -88,7 +90,6 @@ chrome.alarms.onAlarm.addListener(() => {
         createMidnightAlarm();
     });
 })
-
 
 // update timer every 1s
 document.addEventListener("DOMContentLoaded", function(event) { 

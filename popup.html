@@ -3,14 +3,24 @@
   <head>
 		<link rel="stylesheet" href="popup.css">
 		<link href="https://fonts.googleapis.com/css2?family=Roboto+Mono&display=swap" rel="stylesheet">
+		<link href="https://fonts.googleapis.com/css2?family=Roboto&display=swap" rel="stylesheet">
+		<link href='https://fonts.googleapis.com/css?family=Quicksand' rel='stylesheet'>
   </head>
   <body>
-		<img class="horizontal-center" src="images/popup-logo.svg">
-		<hr>
-		<div id="hostname"></div>
-		<div id="time-block" class="horizontal-center">
+		<header>
+			<img id="logo" src="images/popup-logo.svg">
+		</header>
+		<div class="subheading">current site:</div>
+		<div class="block-section">
+			<div id="hostname"></div>
+		</div>
+		<div class="subheading">time remaining:</div>
+		<div class="block-section">
 			<div id="time"></div>
 		</div>
+		<footer>
+			<img id="settings" src="images/settings.svg">
+		</footer>
     <script src="popup.js"></script>
   </body>
 </html>

@@ -1,15 +1,5 @@
 var bg = chrome.extension.getBackgroundPage();
 
-function hideElement(element) {
-    element.innerHTML = '';
-    element.style.display = 'none';
-}
-
-function showElement(element, text) {
-    element.innerHTML = text;
-    element.style.display = 'inline-block';
-}
-
 // update hostname and time in popup html every 500ms
 function updatePopup() {
     var timeDiv = document.getElementById("time");
@@ -19,23 +9,33 @@ function updatePopup() {
         return;
     }
 
+    hostnameDiv.innerHTML = bg.activeHostname;
+
     // check for blocked site
     if (bg.blocked.has(bg.activeHostname)) {
-        hostnameDiv.innerHTML = `'${bg.activeHostname}' is blocked`;
-        hideElement(timeDiv);
+        timeDiv.innerHTML = 'ran out of time';
+        timeDiv.style.fontFamily = 'Roboto';
     // check for time managed site
     } else if (bg.time) {
-        hostnameDiv.innerHTML = `Time left on '${bg.activeHostname}'`;
-        showElement(timeDiv, bg.time);
-    // non-regulated site
+        timeDiv.innerHTML = bg.time;
+        timeDiv.style.fontFamily = 'Roboto Mono';
+    // unmanaged site
     } else {
-        hostnameDiv.innerHTML = `'${bg.activeHostname}' is not time-managed`;
-        hideElement(timeDiv);
+        timeDiv.innerHTML = 'not timed';
+        timeDiv.style.fontFamily = 'Roboto';
     }
-
     setTimeout(updatePopup, 100);
+}
+
+function openOptions() {
+    alert("ASHDBA");
+    chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
+        chrome.tabs.update(tab.id, {url: "options.html"});
+    });
 }
 
 document.addEventListener("DOMContentLoaded", function(event) { 
     updatePopup();
 });
+
+document.getElementById("settings").addEventListener("click", openOptions);
