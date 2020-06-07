@@ -1,0 +1,35 @@
+input[type='text'] {
+	width: 300px;
+	box-sizing: border-box;
+	padding: 10px;
+	margin: 5px;
+	border-radius: 15px;
+	border: 1px solid #a5a5a5;
+	/* background: #f6f6f6; */
+}
+
+button {
+	box-sizing: border-box;
+	width: 300px;
+	padding: 10px;
+	margin: 5px;
+	border-radius: 15px;
+	background: #7957FB;
+	color: white;
+	border: none;
+}
+
+button:hover {
+	cursor: pointer;
+	opacity: 0.5;
+}
+
+input:hover,
+input:focus,
+select:focus,
+textarea:focus,
+button:focus {
+		outline: 0;
+		border-color: #7957FB;
+		/* box-shadow: 0 0 5px #7957FB; */
+}
