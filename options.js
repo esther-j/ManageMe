@@ -1,10 +1,8 @@
 if (!chrome.extension) {
-    var timers = {"www.google.com": 9, "www.hulu.com": 100};
-    var originalTimers = {"www.google.com": 10, "www.hulu.com": 110};
+    var timers = {'www.google.com': {limit: 1000, remaining: 1000, status: true, blocked: false}};
 } else {
     var bg = chrome.extension.getBackgroundPage();
     var timers = bg.timers;
-    var originalTimers = bg.originalTimers;
 }
 var modal = document.getElementById("modal");
 var addButton = document.getElementById("add-button");
@@ -55,28 +53,34 @@ function checkResponse() {
 
 function newTimer(hostname, time) {
     // time *= 60;
-    timers[hostname] = time;
-    originalTimers[hostname] = time;
-    addTimerBlock(createTimerBlock(hostname, time, time, "On"));
+    timers[hostname] = {
+        limit: time,
+        remaining: time,
+        status: true,
+        blocked: false
+    };
+    
+    addTimerBlock(createTimerBlock(hostname));
 }
 
-function createTimerBlock(site, remaining, limit, status) {
+function createTimerBlock(hostname) {
+    var timerObj = timers[hostname];
     var timerBlock = document.createElement("div"); 
     timerBlock.className = "timer-block timer-format";
-    timerBlock.id = site;
+    timerBlock.id = hostname;
 
     var timerSite = document.createElement("div");
     timerSite.className = "timer-site left-align";
-    timerSite.innerHTML = site;
+    timerSite.innerHTML = hostname;
 
     var timerRemaining = document.createElement("div");
-    timerRemaining.innerHTML = formatTime(remaining);
+    timerRemaining.innerHTML = formatTime(timerObj.remaining);
 
     var timerLimit = document.createElement("div");
-    timerLimit.innerHTML = formatTime(limit);
+    timerLimit.innerHTML = formatTime(timerObj.limit);
 
     var timerStatus = document.createElement("div");
-    timerStatus.innerHTML = status;
+    timerStatus.innerHTML = timerObj.status;
 
     var timerClose = document.createElement("div");
     timerClose.className = "close delete-timer";
@@ -98,8 +102,9 @@ function addTimerBlock(timerBlock) {
 }
 
 function addExistingTimers() {
-    for (timer in originalTimers) {
-        addTimerBlock(createTimerBlock(timer, timers[timer], originalTimers[timer], "On"));
+    for (timer in timers) {
+        let timerObj = timers[timer];
+        addTimerBlock(createTimerBlock(timer, timerObj.remaining, timerObj.limit, timerObj.status));
     }
     var deleteTimers = document.getElementsByClassName("delete-timer")
     for (var i = 0; i < deleteTimers.length; i++) {
@@ -112,7 +117,6 @@ function deleteTimer() {
     var site = timerBlock.id;
     timerBlock.parentElement.removeChild(timerBlock);
     delete timers[site];
-    delete originalTimers[site];
 }
 
 // formats a given number of seconds into a hh:mm:ss/mm:ss format 

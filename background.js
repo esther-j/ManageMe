@@ -1,40 +1,26 @@
-var timers = {'www.google.com': 1000};
-var originalTimers = {'www.google.com': 1000};
-var blocked = new Set();
+var timers = {'www.google.com': {limit: 1000, remaining: 1000, status: true, blocked: false}};
 var activeHostname;
-var time;
 
 // update time
 function updateTimer() {
-    if (blocked.has(activeHostname)) {
+    if (!(activeHostname in timers)) {
+        return;
+    }
+    if (timers[activeHostname].blocked) {
         chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
             chrome.tabs.update(tab.id, {url: "blocked.html"});
         });
     }
 
-    time = "";
-    if (activeHostname in timers) {
-        if (timers[activeHostname] == 0 && !(activeHostname in blocked)) {
+    if (timers[activeHostname].status) {
+        let hostnameInfo = timers[activeHostname];
+        if (hostnameInfo.remaining == 0 && !hostnameInfo.blocked) {
             alert(`Ran out of time at ${activeHostname}`);
-            blocked.add(activeHostname);
+            hostnameInfo.blocked = true;
         } else {
-            timers[activeHostname]--;
-            time = formatTime(timers[activeHostname]);
+            hostnameInfo.remaining--;
         }
     }
-}
-
-// formats a given number of seconds into a hh:mm:ss/mm:ss format 
-function formatTime(seconds) {
-    var hours = Math.floor(seconds / 3600);
-    seconds %= 3600;
-    var minutes = Math.floor(seconds / 60);
-    seconds %= 60;
-    
-    timeStr = hours ? `${hours}:` : '';
-    timeStr += minutes < 10 ? `0${minutes}:` : `${minutes}:`;
-    timeStr += seconds < 10 ? `0${seconds}` : `${seconds}`;
-    return timeStr;
 }
 
 // query and retrieve current hostname of active tab 
