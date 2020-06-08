@@ -4,13 +4,47 @@
 		<link rel="stylesheet" href="options.css">
 	</head>
 	<body>
-		<!-- <label for="hostname">Site:</label><br> -->
-		<input type="text" id="hostname-input" name="hostname" placeholder="Website" required>
-		<br>
-		<!-- <label for="time">Minutes:</label><br> -->
-		<input type="text" id="time-input" name="time" placeholder="Minutes" required>
-		<br>
-		<button id="add-btn">Add</button>
+		<div id="modal">
+			<div id="modal-content">
+				<span id="modal-close" class="close">&times;</span>
+				<input type="text" id="hostname-input" name="hostname" placeholder="Website" required>
+				<br>
+				<input type="text" id="time-input" name="time" placeholder="Minutes" required>
+				<br>
+				<button id="modal-add-button">Add</button>
+			</div>
+		</div>
+		<div id="nav">
+			<img id="logo" src="images/options-logo.svg">
+			<a id="active" class="nav-block" href="options.html">
+				<div class="nav-link">Timers</div>
+			</a>
+			<a class="nav-block" href="">
+				<div class="nav-link">About/FAQ</div>
+			</a>
+		</div>
+		<div id="main">
+			<div id="title-container">
+				<h1>Timers</h1>
+				<button id="add-button"><b>+ Add timer</b></button>
+			</div>
+			<div id="timer-container">
+				<div id="timer-heading-container" class="timer-format">
+					<div class="left-align">Website</div>
+					<div>Remaining (min)</div>
+					<div>Limit (min)</div>
+					<div>On/Off</div>
+					<div> </div>
+				</div>
+				<div class="timer-block timer-format">
+					<div class="left-align">www.google.com</div>
+					<div>10</div>
+					<div>10</div>
+					<div>Off</div>
+					<div class="close">&times;</div>
+				</div>
+			</div>
+		</div>
 	</body>
 	<script src="options.js"></script>
 </html>

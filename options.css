@@ -1,3 +1,149 @@
+html, body {
+	margin: 0;
+	width: 100%;
+	height: 100%;
+	font-family: 'Arial';
+}
+
+a:link,
+a:visited {
+  text-decoration: none;
+}
+
+#nav {
+	position: fixed;
+	float: left;
+	box-sizing: border-box;
+	width: 250px;
+	height: 100%;
+	background: rgba(121, 87, 251, 0.1);
+}
+
+#logo {
+	margin: 20px;
+	margin-bottom: 100px;
+	display: block;
+}
+
+.nav-block {
+	box-sizing: border-box;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 50px;
+}
+
+#active {
+	background: rgba(121, 87, 251, 0.1);
+	border-left: 5px solid rgba(121, 87, 251, 0.5);
+}
+
+.nav-link {
+	margin-left: 15px;
+	font-style: normal;
+	color: black;
+	font-size: 14px;
+}
+
+#main {
+	width: 800px;
+	/* border: 1px solid black; */
+	position: relative;
+	left: 300px;
+	top: 100px;
+}
+
+h1 {
+	clear: left;
+	margin: 0;
+}
+
+button {
+	background: rgba(121, 87, 251, 0.8);
+	color: white;
+	font-weight: bold;
+	border-radius: 20px;
+	border: 0;
+}
+
+#add-button {
+	padding: 5px 30px 5px 30px;
+}
+
+#title-container {
+	display: flex;
+	justify-content: space-between;
+	margin-bottom: 10px;
+}
+
+#timer-heading-container > div{
+	color: rgba(0, 0, 0, 0.4);
+}
+
+.timer-block {
+	box-sizing: border-box;
+	background: #F6F6F6;
+	display: flex;
+	align-items: center;
+	width: 100%;
+	height: 40px;
+	border-radius: 20px;
+}
+
+.timer-format {
+	display: grid;
+	grid-template-columns: auto 20% 15% 10% 5%;
+}
+
+.left-align {
+	text-align: left !important;
+}	
+
+.timer-format > div {
+	color: rgba(0, 0, 0, 0.8);
+	font-size: 14px;
+	margin: 5px 20px 5px 20px;
+	text-align: center;
+}
+
+#modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  padding-top: 100px;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgb(0,0,0);
+  background-color: rgba(0,0,0,0.4);
+}
+
+#modal-content {
+	background: white;
+	margin: auto;
+	width: 310px;
+	padding: 10px;
+}
+
+.close {
+	color: #B0B0B0 !important;
+	margin: 5px;
+}
+
+.close:hover,
+.close:focus {
+  color: black !important;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+#modal-close {
+  float: right;
+	font-size: 20px;
+}
+
 input[type='text'] {
 	width: 300px;
 	box-sizing: border-box;
@@ -5,18 +151,13 @@ input[type='text'] {
 	margin: 5px;
 	border-radius: 15px;
 	border: 1px solid #a5a5a5;
-	/* background: #f6f6f6; */
 }
 
-button {
+#modal-add-button {
 	box-sizing: border-box;
 	width: 300px;
 	padding: 10px;
 	margin: 5px;
-	border-radius: 15px;
-	background: #7957FB;
-	color: white;
-	border: none;
 }
 
 button:hover {
@@ -31,5 +172,4 @@ textarea:focus,
 button:focus {
 		outline: 0;
 		border-color: #7957FB;
-		/* box-shadow: 0 0 5px #7957FB; */
 }

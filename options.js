@@ -1,6 +1,17 @@
-var bg = chrome.extension.getBackgroundPage();
+// var bg = chrome.extension.getBackgroundPage();
+var modal = document.getElementById("modal");
+var addButton = document.getElementById("add-button");
+var modalCloseButton = document.getElementById("modal-close");
 
-document.getElementById('add-btn').addEventListener('click', checkResponse);
+addButton.addEventListener('click', () => {modal.style.display = "block";});
+modalCloseButton.addEventListener('click', () => {modal.style.display = "none";});
+document.getElementById('modal-add-button').addEventListener('click', checkResponse);
+
+window.onclick = function(event) {
+  if (event.target == modal) {
+    modal.style.display = "none";
+  }
+}
 
 function checkResponse() {
     var hostnameElement = document.getElementById('hostname-input');
@@ -31,13 +42,14 @@ function checkResponse() {
     console.log(`Success ${hostname} ${time}`);
     hostnameElement.value = '';
     timeElement.value = '';
+    modal.style.display = "none";
     addTimer(hostname, time);
 }
 
 function addTimer(hostname, time) {
     time *= 60;
-    bg.timers[hostname] = time;
-    bg.originalTimers[hostname] = time;
+    // bg.timers[hostname] = time;
+    // bg.originalTimers[hostname] = time;
     console.log('timers' + JSON.stringify(bg.timers));
     console.log('original timers' + JSON.stringify(bg.originalTimers));
 }
