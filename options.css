@@ -85,6 +85,7 @@ button {
 	background: #F6F6F6;
 	display: flex;
 	align-items: center;
+	margin-bottom: 5px;
 	width: 100%;
 	height: 40px;
 	border-radius: 20px;
@@ -104,6 +105,10 @@ button {
 	font-size: 14px;
 	margin: 5px 20px 5px 20px;
 	text-align: center;
+}
+
+.timer-site {
+	overflow: hidden;
 }
 
 #modal {
@@ -129,7 +134,7 @@ button {
 
 .close {
 	color: #B0B0B0 !important;
-	margin: 5px;
+	margin: 5px 5px 5px 0;
 }
 
 .close:hover,

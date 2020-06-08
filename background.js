@@ -14,9 +14,8 @@ function updateTimer() {
 
     time = "";
     if (activeHostname in timers) {
-        if (timers[activeHostname] == 0) {
+        if (timers[activeHostname] == 0 && !(activeHostname in blocked)) {
             alert(`Ran out of time at ${activeHostname}`);
-            delete timers[activeHostname];
             blocked.add(activeHostname);
         } else {
             timers[activeHostname]--;
