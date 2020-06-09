@@ -115,11 +115,27 @@ function checkResponse() {
         return;
     }
 
+    console.log(hostname);
+    hostname = getDomain(hostname);
+
     console.log(`Success ${hostname} ${time}`);
     hostnameElement.value = '';
     timeElement.value = '';
     modal.style.display = 'none';
     newTimer(hostname, time);
+}
+
+function getDomain(url) {
+    var hostname;
+    try {
+        var urlObj = new URL(url);
+        hostname = urlObj.hostname;
+    } catch {
+        hostname = url;
+    }
+	var domain = psl.parse(hostname).domain;
+
+	return domain ? domain : hostname;
 }
 
 function newTimer(hostname, time) {

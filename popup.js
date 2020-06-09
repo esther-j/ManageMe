@@ -2,11 +2,11 @@ var bg = chrome.extension.getBackgroundPage();
 
 // update hostname and time in popup html every 500ms
 function updatePopup() {
-
     var timeDiv = document.getElementById('time');
     var hostnameDiv = document.getElementById('hostname');
 
     if (!(bg.activeHostname)) {
+        setTimeout(updatePopup, 100);
         return;
     }
     
@@ -30,17 +30,17 @@ function updatePopup() {
     setTimeout(updatePopup, 100);
 }
 
-function openOptions() {
-    chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-        chrome.tabs.update(tab.id, {url: 'options.html'});
-    });
-}
+// function openOptions() {
+//     chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
+//         chrome.tabs.update(tab.id, {url: 'options.html'});
+//     });
+// }
 
 document.addEventListener('DOMContentLoaded', function(event) { 
     updatePopup();
 });
 
-document.getElementById('settings').addEventListener('click', openOptions);
+// document.getElementById('settings').addEventListener('click', openOptions);
 
 // formats a given number of seconds into a hh:mm:ss/mm:ss format 
 function formatTime(seconds) {

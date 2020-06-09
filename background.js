@@ -23,6 +23,14 @@ function updateTimer() {
     }
 }
 
+function getDomain(url) {
+	var urlObj = new URL(url);
+	var hostname = urlObj.hostname;
+	var domain = psl.parse(hostname).domain;
+
+	return domain ? domain : hostname;
+}
+
 // query and retrieve current hostname of active tab 
 function getActiveHostname() {
     chrome.tabs.query({
@@ -31,20 +39,20 @@ function getActiveHostname() {
         function(tabs){
             // get current URL and parse out hostname
             var currentUrl = tabs[0].url;
-            var hostname = (new URL(currentUrl)).hostname;
+            var hostname = getDomain(currentUrl);
             updateActiveHostname(hostname);
         }
     );
 }
 
 function updateActiveHostname(hostname) {
-    activeHostname = hostname;
+	activeHostname = hostname;
 }
 
 // listener for when the url changes in active tab
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.url) {
-        var hostname = (new URL(changeInfo.url)).hostname;
+        var hostname = getDomain(changeInfo.url);
         updateActiveHostname(hostname);
     }
 });
