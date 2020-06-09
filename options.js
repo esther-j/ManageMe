@@ -7,10 +7,81 @@ if (!chrome.extension) {
 var modal = document.getElementById("modal");
 var addButton = document.getElementById("add-button");
 var modalCloseButton = document.getElementById("modal-close");
+var navOptions = document.getElementById('nav-options');
+var navAbout = document.getElementById('nav-about');
+var active = navOptions;
 
 addButton.addEventListener('click', () => {modal.style.display = "block";});
 modalCloseButton.addEventListener('click', () => {modal.style.display = "none";});
 document.getElementById('modal-add-button').addEventListener('click', checkResponse);
+navOptions.addEventListener('click', activeOptions);
+navAbout.addEventListener('click', activeAbout);
+
+function makeActive(element) {
+    element.className = "nav-block active";
+    active = element;
+}
+
+function removeActive(element) {
+    element.className = "nav-block";
+}
+
+function activeOptions() {
+    location.hash = 'main';
+    removeActive(active);
+    makeActive(navOptions);
+
+    document.getElementById("title").innerHTML = "Timers";
+
+    var addButton = document.createElement('button');
+    addButton.id = "add-button";
+    addButton.innerHTML = "+ Add timer";
+    document.getElementById("title-container").appendChild(addButton);
+
+    var timerHeadContainer = document.createElement('div');
+    timerHeadContainer.id = "timer-heading-container";
+    timerHeadContainer.className = "timer-format";
+
+    var siteEle = document.createElement('div');
+    siteEle.className = "left-align";
+    siteEle.innerHTML = "Website";
+
+    var remainingEle = document.createElement('div');
+    remainingEle.innerHTML = "Remaining";    
+
+    var timeEle = document.createElement('div');
+    timeEle.innerHTML = "Time Limit";   
+    
+    var statusEle = document.createElement('div');
+    statusEle.innerHTML = "On/Off";
+
+    var blank = document.createElement('div');
+
+    var timerContainer = document.createElement('div');
+    timerContainer.id = "timer-container";
+
+    var main = document.getElementById("main");
+    main.appendChild(timerHeadContainer);
+    main.appendChild(timerContainer);
+
+    for (let elem of [siteEle, remainingEle, timeEle, statusEle, blank]) {
+        timerHeadContainer.appendChild(elem);
+    }
+    addExistingTimers();
+}
+
+function activeAbout() {
+    location.hash = 'about';
+    removeActive(active);
+    makeActive(navAbout);
+
+    document.getElementById("title").innerHTML = "About";
+    document.getElementById("title-container").removeChild(document.getElementById("add-button"));
+    var mainEle = document.getElementById("main");
+    mainEle.removeChild(document.getElementById("timer-heading-container"));
+    mainEle.removeChild(document.getElementById("timer-container"));
+    
+}
 
 window.onclick = function(event) {
   if (event.target == modal) {
