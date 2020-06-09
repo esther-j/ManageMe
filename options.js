@@ -126,12 +126,30 @@ function createTimerBlock(hostname) {
         .attr('id', hostname)
         .addClass('timer-block timer-format');
     
-    $timerBlock.append(
-        `<div class='left-align'>${hostname}</div>
-        <div>${formatTime(timerObj.remaining)}</div>
-        <div>${formatTime(timerObj.limit)}</div>
-        <div>${timerObj.status}</div>`
-    );
+    var $checkbox = $(`<input type='checkbox'>`)
+        .prop('checked', timers[hostname].status)
+        .change(() => { timers[hostname].status = !timers[hostname].status; });
+
+    $timerBlock.append([
+        $(`<div class='left-align'>${hostname}</div>`),
+        $(`<div>${formatTime(timerObj.remaining)}</div>`),
+        $(`<div>${formatTime(timerObj.limit)}</div>`),
+        $(`<div>`).append(
+            $(`<label class='switch'>`).append([
+                $checkbox,
+                $(`<span class='slider round'>`)
+            ])
+        )
+    ]);
+    // $('input[name=checkbox]').change(function(){
+    //     alert('sfds');
+    //     if($(this).is(':checked')) {
+    //         alert(timers[$(this).parent().parent().attr('id')]);
+    //     } else {
+    //         // Checkbox is not checked..
+    //         alert(timers[$(this).parent().parent().attr('id')]);
+    //     }
+    // });
 
     $(`<div class='close delete-timer'>&times;</div>`)
         .click(deleteTimer)
