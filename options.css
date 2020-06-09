@@ -84,6 +84,17 @@ button {
 	color: rgba(0, 0, 0, 0.4);
 }
 
+#blank {
+	background: rgba(0, 0, 0, 0.05);
+	width: 100%;
+	height: 500px;
+	border-radius: 15px;
+	font-size: 20px;
+	line-height: 500px;
+	text-align: center;
+	color: rgba(0, 0, 0, 0.6);
+}
+
 .timer-block {
 	box-sizing: border-box;
 	background: #F6F6F6;

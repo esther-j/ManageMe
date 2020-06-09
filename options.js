@@ -29,13 +29,23 @@ function activeOptions() {
             <div class='left-align'>Website</div>
             <div>Remaining</div>
             <div>Time Limit</div>
-            <div>On/Off</div>
+            <div>Off/On</div>
             <div> </div>
         </div>
         <div id='timer-container'></div>`
     );
+    
+    if (Object.keys(timers).length == 0) {
+        blankSplash();
+    } else {
+        addExistingTimers();
+    }
+}
 
-    addExistingTimers();
+function blankSplash() {
+    $('#timer-container').append(
+        `<div id="blank">You don't have any timers!</div>`
+    );
 }
 
 function activeAbout() {
@@ -141,15 +151,6 @@ function createTimerBlock(hostname) {
             ])
         )
     ]);
-    // $('input[name=checkbox]').change(function(){
-    //     alert('sfds');
-    //     if($(this).is(':checked')) {
-    //         alert(timers[$(this).parent().parent().attr('id')]);
-    //     } else {
-    //         // Checkbox is not checked..
-    //         alert(timers[$(this).parent().parent().attr('id')]);
-    //     }
-    // });
 
     $(`<div class='close delete-timer'>&times;</div>`)
         .click(deleteTimer)
@@ -159,6 +160,9 @@ function createTimerBlock(hostname) {
 }
 
 function addTimerBlock(timerBlock) {
+    if ($('#blank').length != 0) {
+        $('#blank').remove();
+    }
     $('#timer-container').append(timerBlock);
 }
 
@@ -175,6 +179,10 @@ function deleteTimer() {
     $timerBlock.slideUp(() => {
         $timerBlock.remove();
         delete timers[$timerBlock.attr('id')];
+
+        if (Object.keys(timers).length == 0) {
+            blankSplash();
+        }
     });
 }
 

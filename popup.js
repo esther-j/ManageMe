@@ -18,6 +18,9 @@ function updatePopup() {
         if (bg.timers[bg.activeHostname].blocked) {
             $timeDiv.html('Ran out of time');
             $timeDiv.css('font-family', 'Roboto');
+        } else if (!bg.timers[bg.activeHostname].status) {
+            $timeDiv.html('Timing paused');
+            $timeDiv.css('font-family', 'Roboto');    
         // check for time managed site
         } else {
             $timeDiv.html(formatTime(bg.timers[bg.activeHostname].remaining));
