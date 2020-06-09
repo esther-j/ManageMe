@@ -2,45 +2,34 @@ var bg = chrome.extension.getBackgroundPage();
 
 // update hostname and time in popup html every 500ms
 function updatePopup() {
-    var timeDiv = document.getElementById('time');
-    var hostnameDiv = document.getElementById('hostname');
+    var $timeDiv = $('#time');
+    var $hostnameDiv = $('#hostname');
 
     if (!(bg.activeHostname)) {
         setTimeout(updatePopup, 100);
         return;
     }
     
-    hostnameDiv.innerHTML = bg.activeHostname;
+    // hostnameDiv.innerHTML = bg.activeHostname;
+    $hostnameDiv.html(bg.activeHostname);
 
     if (bg.activeHostname in bg.timers) {
         // check for blocked site
         if (bg.timers[bg.activeHostname].blocked) {
-            timeDiv.innerHTML = 'Ran out of time';
-            timeDiv.style.fontFamily = 'Roboto';
+            $timeDiv.html('Ran out of time');
+            $timeDiv.css('font-family', 'Roboto');
         // check for time managed site
         } else {
-            timeDiv.innerHTML = formatTime(bg.timers[bg.activeHostname].remaining);
-            timeDiv.style.fontFamily = 'Roboto Mono';
+            $timeDiv.html(formatTime(bg.timers[bg.activeHostname].remaining));
+            $timeDiv.css('font-family', 'Roboto Mono');
         }
     // unmanaged site
     } else {
-        timeDiv.innerHTML = 'Not timed';
-        timeDiv.style.fontFamily = 'Roboto';
+        $timeDiv.html('Not timed');
+        $timeDiv.css('font-family', 'Roboto');
     }
     setTimeout(updatePopup, 100);
 }
-
-// function openOptions() {
-//     chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-//         chrome.tabs.update(tab.id, {url: 'options.html'});
-//     });
-// }
-
-document.addEventListener('DOMContentLoaded', function(event) { 
-    updatePopup();
-});
-
-// document.getElementById('settings').addEventListener('click', openOptions);
 
 // formats a given number of seconds into a hh:mm:ss/mm:ss format 
 function formatTime(seconds) {
@@ -54,3 +43,5 @@ function formatTime(seconds) {
     timeStr += seconds < 10 ? `0${seconds}` : `${seconds}`;
     return timeStr;
 }
+
+$(document).ready(updatePopup);

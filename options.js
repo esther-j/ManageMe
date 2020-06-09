@@ -1,29 +1,16 @@
-if (!chrome.extension) {
-    var timers = {'www.google.com': {limit: 1000, remaining: 1000, status: true, blocked: false}};
-} else {
-    var bg = chrome.extension.getBackgroundPage();
-    var timers = bg.timers;
-}
-var modal = document.getElementById("modal");
-var addButton = document.getElementById("add-button");
-var modalCloseButton = document.getElementById("modal-close");
-var navOptions = document.getElementById('nav-options');
-var navAbout = document.getElementById('nav-about');
+var bg = chrome.extension.getBackgroundPage();
+var timers = bg.timers;
+var navOptions = $('#nav-options');
+var navAbout = $('#nav-about');
 var active = navOptions;
 
-addButton.addEventListener('click', () => {modal.style.display = "block";});
-modalCloseButton.addEventListener('click', () => {modal.style.display = "none";});
-document.getElementById('modal-add-button').addEventListener('click', checkResponse);
-navOptions.addEventListener('click', activeOptions);
-navAbout.addEventListener('click', activeAbout);
-
 function makeActive(element) {
-    element.className = "nav-block active";
+    element.attr('class', 'nav-block active');
     active = element;
 }
 
 function removeActive(element) {
-    element.className = "nav-block";
+    element.attr('class', 'nav-block');
 }
 
 function activeOptions() {
@@ -31,42 +18,23 @@ function activeOptions() {
     removeActive(active);
     makeActive(navOptions);
 
-    document.getElementById("title").innerHTML = "Timers";
+    $('#title').html('Timers');
 
-    var addButton = document.createElement('button');
-    addButton.id = "add-button";
-    addButton.innerHTML = "+ Add timer";
-    document.getElementById("title-container").appendChild(addButton);
+    $(`<button id='new-timer-button'>+ Add timer</button>`)
+        .appendTo('#title-container')
+        .click(() => { $('#modal').css('display', 'block'); });
 
-    var timerHeadContainer = document.createElement('div');
-    timerHeadContainer.id = "timer-heading-container";
-    timerHeadContainer.className = "timer-format";
+    $('#main').append(
+        `<div id='timer-heading-container' class='timer-format'>
+            <div class='left-align'>Website</div>
+            <div>Remaining</div>
+            <div>Time Limit</div>
+            <div>On/Off</div>
+            <div> </div>
+        </div>
+        <div id='timer-container'></div>`
+    );
 
-    var siteEle = document.createElement('div');
-    siteEle.className = "left-align";
-    siteEle.innerHTML = "Website";
-
-    var remainingEle = document.createElement('div');
-    remainingEle.innerHTML = "Remaining";    
-
-    var timeEle = document.createElement('div');
-    timeEle.innerHTML = "Time Limit";   
-    
-    var statusEle = document.createElement('div');
-    statusEle.innerHTML = "On/Off";
-
-    var blank = document.createElement('div');
-
-    var timerContainer = document.createElement('div');
-    timerContainer.id = "timer-container";
-
-    var main = document.getElementById("main");
-    main.appendChild(timerHeadContainer);
-    main.appendChild(timerContainer);
-
-    for (let elem of [siteEle, remainingEle, timeEle, statusEle, blank]) {
-        timerHeadContainer.appendChild(elem);
-    }
     addExistingTimers();
 }
 
@@ -75,25 +43,23 @@ function activeAbout() {
     removeActive(active);
     makeActive(navAbout);
 
-    document.getElementById("title").innerHTML = "About";
-    document.getElementById("title-container").removeChild(document.getElementById("add-button"));
-    var mainEle = document.getElementById("main");
-    mainEle.removeChild(document.getElementById("timer-heading-container"));
-    mainEle.removeChild(document.getElementById("timer-container"));
-    
+    $('#title').html('About');
+    $('#new-timer-button').remove();
+    $('#timer-heading-container').remove();
+    $('#timer-container').remove();
 }
 
-window.onclick = function(event) {
-  if (event.target == modal) {
-    modal.style.display = "none";
-  }
-}
+$(window).click(function(event) {
+    if ($(event.target).is('#modal')) {
+      $('#modal').css('display', 'none');
+    }
+});
 
 function checkResponse() {
-    var hostnameElement = document.getElementById('hostname-input');
-    var timeElement = document.getElementById('time-input');
-    var hostname = hostnameElement.value.trim();
-    var time = timeElement.value.trim();
+    var $hostnameInput = $('#hostname-input');
+    var $timeInput = $('#time-input');
+    var hostname = $hostnameInput.val().trim();
+    var time = $timeInput.val().trim();
 
     if (!hostname || !time) {
         alert('Please fill in all blanks');
@@ -115,13 +81,16 @@ function checkResponse() {
         return;
     }
 
-    console.log(hostname);
     hostname = getDomain(hostname);
+    if (hostname in bg.timers) {
+        alert(`'${hostname}' already has a timer`);
+        return;
+    }
 
     console.log(`Success ${hostname} ${time}`);
-    hostnameElement.value = '';
-    timeElement.value = '';
-    modal.style.display = 'none';
+    $hostnameInput.val('');
+    $timeInput.val('');
+    $('#modal').css('display', 'none');
     newTimer(hostname, time);
 }
 
@@ -152,40 +121,27 @@ function newTimer(hostname, time) {
 
 function createTimerBlock(hostname) {
     var timerObj = timers[hostname];
-    var timerBlock = document.createElement("div"); 
-    timerBlock.className = "timer-block timer-format";
-    timerBlock.id = hostname;
 
-    var timerSite = document.createElement("div");
-    timerSite.className = "timer-site left-align";
-    timerSite.innerHTML = hostname;
+    var $timerBlock = $('<div>')
+        .attr('id', hostname)
+        .addClass('timer-block timer-format');
+    
+    $timerBlock.append(
+        `<div class='left-align'>${hostname}</div>
+        <div>${formatTime(timerObj.remaining)}</div>
+        <div>${formatTime(timerObj.limit)}</div>
+        <div>${timerObj.status}</div>`
+    );
 
-    var timerRemaining = document.createElement("div");
-    timerRemaining.innerHTML = formatTime(timerObj.remaining);
+    $(`<div class='close delete-timer'>&times;</div>`)
+        .click(deleteTimer)
+        .appendTo($timerBlock);
 
-    var timerLimit = document.createElement("div");
-    timerLimit.innerHTML = formatTime(timerObj.limit);
-
-    var timerStatus = document.createElement("div");
-    timerStatus.innerHTML = timerObj.status;
-
-    var timerClose = document.createElement("div");
-    timerClose.className = "close delete-timer";
-    timerClose.innerHTML = "&times;";
-    timerClose.addEventListener('click', deleteTimer);
-
-    timerBlock.appendChild(timerSite);
-    timerBlock.appendChild(timerRemaining);
-    timerBlock.appendChild(timerLimit);
-    timerBlock.appendChild(timerStatus);
-    timerBlock.appendChild(timerClose);
-
-    return timerBlock;
+    return $timerBlock;
 }
 
 function addTimerBlock(timerBlock) {
-    var timerContainer = document.getElementById("timer-container");
-    timerContainer.appendChild(timerBlock);
+    $('#timer-container').append(timerBlock);
 }
 
 function addExistingTimers() {
@@ -193,17 +149,15 @@ function addExistingTimers() {
         let timerObj = timers[timer];
         addTimerBlock(createTimerBlock(timer, timerObj.remaining, timerObj.limit, timerObj.status));
     }
-    var deleteTimers = document.getElementsByClassName("delete-timer")
-    for (var i = 0; i < deleteTimers.length; i++) {
-        deleteTimers[i].addEventListener('click', deleteTimer);
-    }
+    $('.delete-timer').click(deleteTimer);
 }
 
 function deleteTimer() {
-    var timerBlock = this.parentElement;
-    var site = timerBlock.id;
-    timerBlock.parentElement.removeChild(timerBlock);
-    delete timers[site];
+    var $timerBlock = $(this).parent();
+    $timerBlock.slideUp(() => {
+        $timerBlock.remove();
+        delete timers[$timerBlock.attr('id')];
+    });
 }
 
 // formats a given number of seconds into a hh:mm:ss/mm:ss format 
@@ -220,4 +174,10 @@ function formatTime(seconds) {
     return timeStr;
 }
 
-addExistingTimers();
+$(document).ready(function() {
+    $('#modal-close').click(() => { $('#modal').css('display', 'none'); });
+    $('#modal-add-button').click(checkResponse);
+    $('#nav-options').click(activeOptions);
+    $('#nav-about').click(activeAbout);
+    activeOptions();
+});

@@ -1,4 +1,4 @@
-var timers = {'www.google.com': {limit: 1000, remaining: 1000, status: true, blocked: false}};
+var timers = {};
 var activeHostname;
 
 // update time
@@ -78,11 +78,17 @@ function createMidnightAlarm() {
 // listens for alarm and resets it for next midnight
 chrome.alarms.onAlarm.addListener(() => {
     alert("alarm");
-    timers = originalTimers;
+    resetTimers();
     chrome.alarms.clearAll(() => {
         createMidnightAlarm();
     });
 })
+
+function resetTimers() {
+	for (let timer of Object.keys(timers)) {
+		timers[timer].remaining = timers[timer].limit;
+	}
+}
 
 // update timer every 1s
 document.addEventListener("DOMContentLoaded", function(event) { 
