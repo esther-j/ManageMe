@@ -110,7 +110,7 @@ button {
 
 .timer-block:hover {
 	transform: scale(1.01);
-	box-shadow: 3px 3px 8px 2px rgba(0, 0, 0, 0.3);/*2px 3px 5px 3px rgba(0, 0, 0, 0.3);*/
+	box-shadow: 3px 3px 8px 2px rgba(0, 0, 0, 0.3);
 	background: white;
 }
 
@@ -176,13 +176,21 @@ button {
   font-size: 20px;
 }
 
-input[type='text'] {
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+
+input[type='text'],
+input[type='number'] {
 	width: 300px;
 	box-sizing: border-box;
 	padding: 10px;
 	margin: 5px;
 	border-radius: 15px;
 	border: 1px solid #a5a5a5;
+	-moz-appearance: textfield;
 }
 
 #modal-add-button {
