@@ -1,22 +1,8 @@
 var bg = chrome.extension.getBackgroundPage();
 var timers = bg.timers;
-var navOptions = $('#nav-options');
-var navAbout = $('#nav-about');
-var active = navOptions;
-
-function makeActive(element) {
-    element.attr('class', 'nav-block active');
-    active = element;
-}
-
-function removeActive(element) {
-    element.attr('class', 'nav-block');
-}
 
 function activeOptions() {
     location.hash = 'main';
-    removeActive(active);
-    makeActive(navOptions);
 
     $('#title').html('Timers');
 
@@ -48,15 +34,16 @@ function blankSplash() {
     );
 }
 
-function activeAbout() {
-    location.hash = 'about';
-    removeActive(active);
-    makeActive(navAbout);
-
-    $('#title').html('About');
+function closeOptions() {
     $('#new-timer-button').remove();
     $('#timer-heading-container').remove();
     $('#timer-container').remove();
+}
+
+function activeAbout() {
+    location.hash = 'about';
+
+    $('#title').html('About');
 }
 
 $(window).click(function(event) {
@@ -76,13 +63,15 @@ function checkResponse() {
         return;
     }
 
-    if (!(time = parseInt(time)) || time < 0) {
+    try {
+        time = parseInt(time);
+    } catch {
         alert('Please make minutes a valid integer');
         return;
     }
 
-    if (time == 0) {
-        alert('Please make minutes a non-zero integer');
+    if (time < 0) {
+        alert('Please make minutes a non-negative integer');
         return;
     }
 
@@ -203,7 +192,28 @@ function formatTime(seconds) {
 $(document).ready(function() {
     $('#modal-close').click(() => { $('#modal').css('display', 'none'); });
     $('#modal-add-button').click(checkResponse);
-    $('#nav-options').click(activeOptions);
-    $('#nav-about').click(activeAbout);
+    $('.nav-block').click(toggleTab)
     activeOptions();
 });
+
+function toggleTab() {
+    var selected = $(this).attr('id');
+    var active = $('.active').attr('id');
+
+    if (selected == active) {
+        return;
+    }
+
+    $('.active').removeClass('active')
+    $(this).addClass('active');
+
+    if (active == 'nav-options') {
+        closeOptions();
+    }
+
+    if (selected == 'nav-options') {
+        activeOptions();
+    } else if (selected == 'nav-about') {
+        activeAbout();
+    }
+}

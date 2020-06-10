@@ -8,15 +8,20 @@ function updateTimer() {
     }
     if (timers[activeHostname].blocked) {
         chrome.tabs.query({currentWindow: true, active: true}, function (tab) {
-            chrome.tabs.update(tab.id, {url: "blocked.html"});
-        });
+			// fix async bug
+			if (timers[activeHostname].remaining < 0) {
+				timers[activeHostname].remaining = 0;
+			} 
+			chrome.tabs.update(tab.id, {url: "blocked.html"});
+		});
+		return;
     }
 
     if (timers[activeHostname].status) {
-        let hostnameInfo = timers[activeHostname];
-        if (hostnameInfo.remaining == 0 && !hostnameInfo.blocked) {
+		let hostnameInfo = timers[activeHostname];
+		if (hostnameInfo.remaining == 0) {
             alert(`Ran out of time at ${activeHostname}`);
-            hostnameInfo.blocked = true;
+			hostnameInfo.blocked = true;
         } else {
             hostnameInfo.remaining--;
         }

@@ -10,7 +10,6 @@ function updatePopup() {
         return;
     }
     
-    // hostnameDiv.innerHTML = bg.activeHostname;
     $hostnameDiv.html(bg.activeHostname);
 
     if (bg.activeHostname in bg.timers) {
@@ -18,6 +17,7 @@ function updatePopup() {
         if (bg.timers[bg.activeHostname].blocked) {
             $timeDiv.html('Ran out of time');
             $timeDiv.css('font-family', 'Roboto');
+        // check for off status
         } else if (!bg.timers[bg.activeHostname].status) {
             $timeDiv.html('Timing paused');
             $timeDiv.css('font-family', 'Roboto');    
@@ -31,7 +31,7 @@ function updatePopup() {
         $timeDiv.html('Not timed');
         $timeDiv.css('font-family', 'Roboto');
     }
-    setTimeout(updatePopup, 100);
+    setTimeout(updatePopup, 200);
 }
 
 // formats a given number of seconds into a hh:mm:ss/mm:ss format 
