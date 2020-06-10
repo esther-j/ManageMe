@@ -17,15 +17,44 @@ function updateTimer() {
 		return;
     }
 
-    if (timers[activeHostname].status) {
-		let hostnameInfo = timers[activeHostname];
+	let hostnameInfo = timers[activeHostname];
+    if (hostnameInfo.status) {
 		if (hostnameInfo.remaining == 0) {
             alert(`Ran out of time at ${activeHostname}`);
 			hostnameInfo.blocked = true;
         } else {
             hostnameInfo.remaining--;
         }
-    }
+	}
+
+	makeTimeNotification(hostnameInfo.remaining);
+}
+
+function makeTimeNotification(remaining) {
+	if (remaining != 60 && 
+		remaining != 300 &&
+		remaining != 600) {
+		return;
+	}
+
+	var options = {
+		type: "basic",
+		title: "ManageMe",
+		iconUrl: "images/icon48.png",
+		priority: 2
+	};
+	switch (remaining) {
+		case 600:
+			options.message = `10 minutes remaining on ${activeHostname}`;
+			break;
+		case 300:
+			options.message = `5 minutes remaining on ${activeHostname}`;
+			break;
+		case 60: 
+			options.message = `1 minute remaining on ${activeHostname}`;
+			break;
+	}
+	chrome.notifications.create("", options, (notificationId) => {});
 }
 
 function getDomain(url) {
@@ -69,6 +98,7 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 
 // listener for when installed
 chrome.runtime.onInstalled.addListener((details) => {
+	chrome.tabs.create({url: 'options.html' });
     getActiveHostname();
 });
 
