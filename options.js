@@ -6,12 +6,14 @@ function activeOptions() {
 
     $('#title').html('Timers');
 
-    $(`<button id='new-timer-button'>+ Add timer</button>`)
-        .appendTo('#title-container')
-        .click(() => { $('#modal').css('display', 'block'); });
-
     $('#main').append(
-        `<div id='timer-heading-container' class='timer-format'>
+        `<div id="add-timer-container">
+            <input type="text" id="hostname-input" name="hostname" placeholder="Website" required>
+            <input type="number" id="time-input" name="time" placeholder="Minutes" required>
+            <button id="add-button">+ Add timer</button>
+        </div>
+        <br>
+        <div id='timer-heading-container' class='timer-format'>
             <div class='left-align'>Website</div>
             <div>Remaining</div>
             <div>Time Limit</div>
@@ -20,6 +22,7 @@ function activeOptions() {
         </div>
         <div id='timer-container'></div>`
     );
+    $('#add-button').click(checkResponse);
     
     if (Object.keys(timers).length == 0) {
         blankSplash();
@@ -35,8 +38,10 @@ function blankSplash() {
 }
 
 function closeOptions() {
-    $('#new-timer-button').remove();
+    $('#add-button').remove();
+    $('br').remove();
     $('#timer-heading-container').remove();
+    $('#add-timer-container').remove();
     $('#timer-container').remove();
 }
 
@@ -45,12 +50,6 @@ function activeAbout() {
 
     $('#title').html('About');
 }
-
-$(window).click(function(event) {
-    if ($(event.target).is('#modal')) {
-      $('#modal').css('display', 'none');
-    }
-});
 
 function checkResponse() {
     var $hostnameInput = $('#hostname-input');
@@ -89,7 +88,6 @@ function checkResponse() {
     console.log(`Success ${hostname} ${time}`);
     $hostnameInput.val('');
     $timeInput.val('');
-    $('#modal').css('display', 'none');
     newTimer(hostname, time);
 }
 
@@ -141,7 +139,7 @@ function createTimerBlock(hostname) {
         )
     ]);
 
-    $(`<div class='close delete-timer'>&times;</div>`)
+    $(`<div class='close'>&times;</div>`)
         .click(deleteTimer)
         .appendTo($timerBlock);
 
@@ -160,7 +158,7 @@ function addExistingTimers() {
         let timerObj = timers[timer];
         addTimerBlock(createTimerBlock(timer, timerObj.remaining, timerObj.limit, timerObj.status));
     }
-    $('.delete-timer').click(deleteTimer);
+    $('.close').click(deleteTimer);
 }
 
 function deleteTimer() {
@@ -190,9 +188,7 @@ function formatTime(seconds) {
 }
 
 $(document).ready(function() {
-    $('#modal-close').click(() => { $('#modal').css('display', 'none'); });
-    $('#modal-add-button').click(checkResponse);
-    $('.nav-block').click(toggleTab)
+    $('.nav-block').click(toggleTab);
     activeOptions();
 });
 
