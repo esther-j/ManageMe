@@ -3,7 +3,9 @@ var activeHostname;
 
 // update time
 function updateTimer() {
+	chrome.browserAction.setBadgeText({text: ''});
     if (!(activeHostname in timers)) {
+		setTimeout(updateTimer, 1000);
         return;
     }
     if (timers[activeHostname].blocked) {
@@ -14,6 +16,7 @@ function updateTimer() {
 			} 
 			chrome.tabs.update(tab.id, {url: "blocked.html"});
 		});
+		setTimeout(updateTimer, 1000);
 		return;
     }
 
@@ -26,8 +29,24 @@ function updateTimer() {
             hostnameInfo.remaining--;
         }
 	}
-
+	
+	setBadge(hostnameInfo.remaining);
 	makeTimeNotification(hostnameInfo.remaining);
+	setTimeout(updateTimer, 1000);
+}
+
+function setBadge(remainingTime) {
+	var badgeText;
+	if (remainingTime == 0) {
+		badgeText = ''
+	} else if ((hrs = Math.floor(remainingTime / 3600)) > 0) {
+		badgeText = `${hrs}hr`;
+	} else if ((min = Math.floor(remainingTime / 60)) > 60) {
+		badgeText = `${min}m`;
+	} else {
+		badgeText = `${remainingTime}s`;
+	}
+	chrome.browserAction.setBadgeText({text: badgeText});
 }
 
 function makeTimeNotification(remaining) {
@@ -128,5 +147,5 @@ function resetTimers() {
 // update timer every 1s
 document.addEventListener("DOMContentLoaded", function(event) { 
     createMidnightAlarm();
-    setInterval(updateTimer, 1000);
+    setTimeout(updateTimer, 1000);
 });
