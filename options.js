@@ -12,7 +12,6 @@ function activeOptions() {
             <input type="number" id="time-input" name="time" placeholder="Minutes" required>
             <button id="add-button">+ Add timer</button>
         </div>
-        <br>
         <div id='timer-heading-container' class='timer-format'>
             <div class='left-align'>Website</div>
             <div>Remaining</div>
@@ -39,7 +38,6 @@ function blankSplash() {
 
 function closeOptions() {
     $('#add-button').remove();
-    $('br').remove();
     $('#timer-heading-container').remove();
     $('#add-timer-container').remove();
     $('#timer-container').remove();
