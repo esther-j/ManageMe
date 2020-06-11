@@ -15,6 +15,7 @@ function updateTimer() {
 			} 
 			chrome.tabs.update(tab.id, {url: "blocked.html"});
 		});
+		chrome.storage.local.set({'timers': JSON.stringify(timers)}, () => {});
 		setTimeout(updateTimer, 1000);
 		return;
     }
@@ -28,7 +29,7 @@ function updateTimer() {
             hostnameInfo.remaining--;
         }
 	}
-	
+	chrome.storage.local.set({'timers': JSON.stringify(timers)}, () => {});
 	setBadge(hostnameInfo.remaining);
 	makeTimeNotification(hostnameInfo.remaining);
 	setTimeout(updateTimer, 1000);
@@ -132,8 +133,11 @@ chrome.tabs.onActivated.addListener((activeInfo) => {
 
 // listener for when installed
 chrome.runtime.onInstalled.addListener((details) => {
-	chrome.tabs.create({url: 'options.html' });
-    getActiveHostname();
+	chrome.storage.local.get('timers', function(result) {
+		timers = JSON.parse(result.timers);
+		chrome.tabs.create({url: 'options.html' });
+    	getActiveHostname();
+	});
 });
 
 // makes an alarm for midnight
@@ -146,7 +150,7 @@ function createMidnightAlarm() {
 
 // listens for alarm and resets it for next midnight
 chrome.alarms.onAlarm.addListener(() => {
-    alert("alarm");
+    // alert("alarm");
     resetTimers();
     chrome.alarms.clearAll(() => {
         createMidnightAlarm();
@@ -157,6 +161,7 @@ function resetTimers() {
 	for (let timer of Object.keys(timers)) {
 		timers[timer].remaining = timers[timer].limit;
 	}
+	chrome.storage.local.set({'timers': JSON.stringify(timers)}, () => {});
 }
 
 // update timer every 1s

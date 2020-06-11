@@ -197,7 +197,9 @@ function newTimer(hostname, time) {
         blocked: false
     };
     
-    addTimerBlock(createTimerBlock(hostname));
+    chrome.storage.local.set({'timers': JSON.stringify(timers)}, function() {
+        addTimerBlock(createTimerBlock(hostname));
+    });
 }
 
 function createTimerBlock(hostname) {
@@ -209,7 +211,10 @@ function createTimerBlock(hostname) {
     
     var $checkbox = $(`<input type='checkbox'>`)
         .prop('checked', timers[hostname].status)
-        .change(() => { timers[hostname].status = !timers[hostname].status; });
+        .change(() => { 
+            timers[hostname].status = !timers[hostname].status; 
+            chrome.storage.local.set({'timers': JSON.stringify(timers)}, () => {});
+        });
 
     $timerBlock.append([
         $(`<div class='left-align'>${hostname}</div>`),
@@ -231,8 +236,6 @@ function createTimerBlock(hostname) {
         .click(deleteTimer)
         .appendTo($timerBlock);
     }
-
-
 
     return $timerBlock;
 }
@@ -273,7 +276,9 @@ function deleteTimer() {
     var $timerBlock = $(this).parent();
     $timerBlock.slideUp(() => {
         $timerBlock.remove();
-        delete timers[$timerBlock.attr('id')];
+        const site = $timerBlock.attr('id');
+        delete timers[site];
+        chrome.storage.local.set({'timers': JSON.stringify(timers)}, () => {});
 
         if (Object.keys(timers).length == 0) {
             blankSplash();
@@ -322,9 +327,4 @@ function toggleTab() {
     } else if (selected == 'nav-help') {
         activeHelp();
     }
-}
-
-function refreshOptions() {
-    closeOptions();
-    activeOptions();
 }
