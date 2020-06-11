@@ -1,20 +1,20 @@
 var bg = chrome.extension.getBackgroundPage();
 var timers = bg.timers;
 
-function activeOptions() {
-    location.hash = 'main';
+function activeTimers() {
+    location.hash = "main";
 
-    $('#title').html('Timers');
+    $("#title").html("Timers");
 
-    $('#main').append(
+    $("#main").append(
         `<div id="add-timer-container">
             <input type="text" id="hostname-input" name="hostname" placeholder="Website" title="Website link" required>
             <input type="number" id="time-input" name="time" placeholder="Minutes" title="Time limit" required>
             <button id="add-button">+ Add timer</button>
         </div>`
     );
-    $('#add-button').click(checkResponse);
-    
+    $("#add-button").click(checkResponse);
+
     if (Object.keys(timers).length == 0) {
         blankSplash();
     } else {
@@ -22,32 +22,22 @@ function activeOptions() {
     }
 }
 
-function blankSplash() {
-    $('#timer-heading-container, #timer-container').remove();
-    $('#main').append(
-        `<div id="blank">You don't have any timers!</div>`
-    );
-}
-
-function closeOptions() {
-    if ($('#blank').length) {
-        $('#blank').remove();
+function closeTimers() {
+    if ($("#blank").length) {
+        $("#blank").remove();
     }
-    $('#add-button').remove();
-    $('#timer-heading-container').remove();
-    $('#add-timer-container').remove();
-    $('#timer-container').remove();
-}
-
-function closeHelp() {
-    $('#help-content').remove();
+    $("#add-button").remove();
+    $("#timer-heading-container").remove();
+    $("#add-timer-container").remove();
+    $("#timer-container").remove();
 }
 
 function activeHelp() {
-    location.hash = 'help';
+    location.hash = "help";
 
-    $('#title').html('Help/FAQ');
-    $('#main').append(
+    $("#title").html("Help/FAQ");
+
+    $("#main").append(
         `<div id="help-content">
             <div class="help-container">
                 <div class="accordion">
@@ -59,7 +49,8 @@ function activeHelp() {
                     how much time you spend on websites. Simply add a website and 
                     the number of minutes daily you will spend on the site. The 
                     domain of that site will be blocked for the remainder of the 
-                    day once your limit is reached until the timers are reset at midnight.
+                    day once your limit is reached. All timers are automatically 
+                    reset at midnight.
                 </div>
             </div>
             <div class="help-container">
@@ -127,39 +118,53 @@ function activeHelp() {
         </div>`
     );
 
-    $('.accordion').click(function() {
-        $(this).toggleClass('active-faq');
+    $(".accordion").click(function () {
+        $(this).toggleClass("active-faq");
         $(this).next().slideToggle();
-        var $icon = $(this).children('.dropdown-icon');
-        $icon.html() == '+' ? $icon.html('&#8722;') : $icon.html('+');
+        var $icon = $(this).children(".dropdown-icon");
+        $icon.html() == "+" ? $icon.html("&#8722;") : $icon.html("+");
     });
 }
 
+function closeHelp() {
+    $("#help-content").remove();
+}
+
+function blankSplash() {
+    $("#timer-heading-container, #timer-container").remove();
+    $("#main").append(`<div id="blank">You don't have any timers!</div>`);
+}
+
+function refreshTimers() {
+    closeTimers();
+    activeTimers();
+}
+
 function checkResponse() {
-    var $hostnameInput = $('#hostname-input');
-    var $timeInput = $('#time-input');
+    var $hostnameInput = $("#hostname-input");
+    var $timeInput = $("#time-input");
     var hostname = $hostnameInput.val().trim();
     var time = $timeInput.val().trim();
 
     if (!hostname || !time) {
-        alert('Please fill in all blanks');
+        alert("Please fill in all blanks");
         return;
     }
 
     try {
         time = parseInt(time);
     } catch {
-        alert('Please make minutes a valid integer');
+        alert("Please make minutes a valid integer");
         return;
     }
 
     if (time < 0) {
-        alert('Please make minutes a non-negative integer');
+        alert("Please make minutes a non-negative integer");
         return;
     }
 
     if (time > 1440) {
-        alert('Please make minutes less than or equal to 1440');
+        alert("Please make minutes less than or equal to 1440");
         return;
     }
 
@@ -170,8 +175,8 @@ function checkResponse() {
     }
 
     console.log(`Success ${hostname} ${time}`);
-    $hostnameInput.val('');
-    $timeInput.val('');
+    $hostnameInput.val("");
+    $timeInput.val("");
     newTimer(hostname, time);
 }
 
@@ -183,9 +188,9 @@ function getDomain(url) {
     } catch {
         hostname = url;
     }
-	var domain = psl.parse(hostname).domain;
+    var domain = psl.parse(hostname).domain;
 
-	return domain ? domain : hostname;
+    return domain ? domain : hostname;
 }
 
 function newTimer(hostname, time) {
@@ -194,10 +199,10 @@ function newTimer(hostname, time) {
         limit: time,
         remaining: time,
         status: true,
-        blocked: false
+        blocked: false,
     };
-    
-    chrome.storage.local.set({'timers': JSON.stringify(timers)}, function() {
+
+    chrome.storage.local.set({ timers: JSON.stringify(timers) }, function () {
         addTimerBlock(createTimerBlock(hostname));
     });
 }
@@ -205,15 +210,15 @@ function newTimer(hostname, time) {
 function createTimerBlock(hostname) {
     var timerObj = timers[hostname];
 
-    var $timerBlock = $('<div>')
-        .attr('id', hostname)
-        .addClass('timer-block timer-format');
-    
+    var $timerBlock = $("<div>")
+        .attr("id", hostname)
+        .addClass("timer-block timer-format");
+
     var $checkbox = $(`<input type='checkbox'>`)
-        .prop('checked', timers[hostname].status)
-        .change(() => { 
-            timers[hostname].status = !timers[hostname].status; 
-            chrome.storage.local.set({'timers': JSON.stringify(timers)}, () => {});
+        .prop("checked", timers[hostname].status)
+        .change(() => {
+            timers[hostname].status = !timers[hostname].status;
+            chrome.storage.local.set({ timers: JSON.stringify(timers) }, () => {});
         });
 
     $timerBlock.append([
@@ -223,25 +228,25 @@ function createTimerBlock(hostname) {
         $(`<div>`).append(
             $(`<label class='switch'>`).append([
                 $checkbox,
-                $(`<span class='slider round'>`)
+                $(`<span class='slider round'>`),
             ])
-        )
+        ),
     ]);
 
     if (timerObj.remaining == 0 && timerObj.limit > 0) {
-        $checkbox.parent().addClass('disabled');
-        $checkbox.attr('disabled', true);
+        $checkbox.parent().addClass("disabled");
+        $checkbox.attr("disabled", true);
     } else {
         $(`<div class='close'>&times;</div>`)
-        .click(deleteTimer)
-        .appendTo($timerBlock);
+            .click(deleteTimer)
+            .appendTo($timerBlock);
     }
 
     return $timerBlock;
 }
 
 function makeTimerContainer() {
-    $('#main').append(
+    $("#main").append(
         `<div id='timer-heading-container' class='timer-format'>
             <div class='left-align'>Website</div>
             <div>Remaining</div>
@@ -254,12 +259,12 @@ function makeTimerContainer() {
 }
 
 function addTimerBlock(timerBlock) {
-    if ($('#blank').length != 0) {
-        $('#blank').remove();
+    if ($("#blank").length != 0) {
+        $("#blank").remove();
         makeTimerContainer();
     }
 
-    $('#timer-container').append(timerBlock);
+    $("#timer-container").append(timerBlock);
 }
 
 function addExistingTimers() {
@@ -267,18 +272,25 @@ function addExistingTimers() {
 
     for (timer in timers) {
         let timerObj = timers[timer];
-        addTimerBlock(createTimerBlock(timer, timerObj.remaining, timerObj.limit, timerObj.status));
+        addTimerBlock(
+            createTimerBlock(
+                timer,
+                timerObj.remaining,
+                timerObj.limit,
+                timerObj.status
+            )
+        );
     }
-    $('.close').click(deleteTimer);
+    $(".close").click(deleteTimer);
 }
 
 function deleteTimer() {
     var $timerBlock = $(this).parent();
     $timerBlock.slideUp(() => {
         $timerBlock.remove();
-        const site = $timerBlock.attr('id');
+        const site = $timerBlock.attr("id");
         delete timers[site];
-        chrome.storage.local.set({'timers': JSON.stringify(timers)}, () => {});
+        chrome.storage.local.set({ timers: JSON.stringify(timers) }, () => {});
 
         if (Object.keys(timers).length == 0) {
             blankSplash();
@@ -286,45 +298,47 @@ function deleteTimer() {
     });
 }
 
-// formats a given number of seconds into a hh:mm:ss/mm:ss format 
+// formats a given number of seconds into a hh:mm:ss/mm:ss format
 function formatTime(seconds) {
     var hours = Math.floor(seconds / 3600);
     seconds %= 3600;
     var minutes = Math.floor(seconds / 60);
     seconds %= 60;
 
-    if (!hours && !minutes && !seconds) { return 0; }
-    timeStr = hours ? `${hours}:` : '00:';
+    if (!hours && !minutes && !seconds) {
+        return 0;
+    }
+    timeStr = hours ? `${hours}:` : "00:";
     timeStr += minutes < 10 ? `0${minutes}:` : `${minutes}:`;
     timeStr += seconds < 10 ? `0${seconds}` : `${seconds}`;
     return timeStr;
 }
 
-$(document).ready(function() {
-    $('.nav-block').click(toggleTab);
-    activeOptions();
+$(document).ready(function () {
+    $(".nav-block").click(toggleTab);
+    activeTimers();
 });
 
 function toggleTab() {
-    var selected = $(this).attr('id');
-    var active = $('.active').attr('id');
+    var selected = $(this).attr("id");
+    var active = $(".active").attr("id");
 
     if (selected == active) {
         return;
     }
 
-    $('.active').removeClass('active')
-    $(this).addClass('active');
+    $(".active").removeClass("active");
+    $(this).addClass("active");
 
-    if (active == 'nav-options') {
-        closeOptions();
-    } else if (active == 'nav-help') {
+    if (active == "nav-options") {
+        closeTimers();
+    } else if (active == "nav-help") {
         closeHelp();
     }
 
-    if (selected == 'nav-options') {
-        activeOptions();
-    } else if (selected == 'nav-help') {
+    if (selected == "nav-options") {
+        activeTimers();
+    } else if (selected == "nav-help") {
         activeHelp();
     }
 }

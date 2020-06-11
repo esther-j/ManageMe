@@ -1,8 +1,9 @@
-html, body {
-	margin: 0;
-	width: 100%;
-	height: 100%;
-	font-family: 'Arial';
+html,
+body {
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  font-family: "Arial";
 }
 
 a:link,
@@ -10,137 +11,132 @@ a:visited {
   text-decoration: none;
 }
 
-p, li {
-	font-size: 15px;
-	margin-bottom: 20px;
-}
-
 #nav {
-	box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
-	position: fixed;
-	float: left;
-	box-sizing: border-box;
-	width: 250px;
-	height: 100%;
-	background: rgba(121, 87, 251, 0.1);
+  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
+  position: fixed;
+  float: left;
+  box-sizing: border-box;
+  width: 250px;
+  height: 100%;
+  background: rgba(121, 87, 251, 0.1);
 }
 
 #logo {
-	margin: 20px;
-	margin-bottom: 100px;
-	display: block;
+  margin: 20px;
+  margin-bottom: 100px;
+  display: block;
 }
 
 .nav-block {
-	box-sizing: border-box;
-	display: flex;
-	align-items: center;
-	width: 100%;
-	height: 50px;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 50px;
 }
 
 .nav-block:hover {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .active {
-	background: rgba(121, 87, 251, 0.1);
-	border-right: 5px solid rgba(121, 87, 251, 0.5);
+  background: rgba(121, 87, 251, 0.1);
+  border-right: 5px solid rgba(121, 87, 251, 0.5);
 }
 
 .active > div {
-	color: #542CEE; 
+  color: #542cee;
 }
 
 .nav-link {
-	margin-left: 15px;
-	font-style: normal;
-	color: black;
-	font-size: 14px;
+  margin-left: 15px;
+  font-style: normal;
+  color: black;
+  font-size: 14px;
 }
 
 #main {
-	width: 800px;
-	margin: 100px 0 40px 300px;
-	position: absolute;
+  width: 800px;
+  margin: 100px 0 40px 300px;
+  position: absolute;
 }
 
 h1 {
-	clear: left;
-	margin: 0;
+  clear: left;
+  margin: 0;
 }
 
 button {
-	background: rgba(121, 87, 251, 0.8);
-	color: white;
-	font-weight: bold;
-	border-radius: 20px;
-	border: 0;
+  background: rgba(121, 87, 251, 0.8);
+  color: white;
+  font-weight: bold;
+  border-radius: 20px;
+  border: 0;
 }
 
 #title-container {
-	display: flex;
-	justify-content: space-between;
-	margin-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
 }
 
-#timer-heading-container > div{
-	color: rgba(0, 0, 0, 0.4);
-	font-size: 12px;
+#timer-heading-container > div {
+  color: rgba(0, 0, 0, 0.4);
+  font-size: 12px;
 }
 
 #blank {
-	background: rgba(0, 0, 0, 0.04);
-	width: 100%;
-	height: 450px;
-	border-radius: 15px;
-	font-size: 20px;
-	line-height: 500px;
-	text-align: center;
-	color: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.04);
+  width: 100%;
+  height: 450px;
+  border-radius: 15px;
+  font-size: 20px;
+  line-height: 500px;
+  text-align: center;
+  color: rgba(0, 0, 0, 0.6);
 }
 
 .timer-block {
-	background: #F6F6F6;
-	display: flex;
-	align-items: center;
-	margin-bottom: 5px;
-	width: 100%;
-	height: 40px;
-	border-radius: 20px;
-	transition: transform .2s;
+  background: #f6f6f6;
+  display: flex;
+  align-items: center;
+  margin-bottom: 5px;
+  width: 100%;
+  height: 40px;
+  border-radius: 20px;
+  transition: transform 0.2s;
 }
 
 .timer-block:hover {
-	transform: scale(1.01);
-	box-shadow: 3px 3px 8px 2px rgba(0, 0, 0, 0.3);
-	background: white;
+  transform: scale(1.01);
+  box-shadow: 3px 3px 8px 2px rgba(0, 0, 0, 0.3);
+  background: white;
 }
 
 .timer-format {
-	display: grid;
-	grid-template-columns: auto 20% 15% 10% 5%;
+  display: grid;
+  grid-template-columns: auto 20% 15% 10% 5%;
 }
 
 .left-align {
-	text-align: left !important;
-}	
+  text-align: left !important;
+}
 
 .timer-format > div {
-	color: rgba(0, 0, 0, 0.8);
-	font-size: 14px;
-	margin: 5px 20px 5px 20px;
-	text-align: center;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 14px;
+  margin: 5px 20px 5px 20px;
+  text-align: center;
 }
 
 .timer-site {
-	overflow: hidden;
+  overflow: hidden;
 }
 
 .close {
-	color: #B0B0B0 !important;
-	margin: 5px 5px 5px 0 !important;
-	font-size: 20px !important;
+  color: #b0b0b0 !important;
+  margin: 5px 5px 5px 0 !important;
+  font-size: 20px !important;
 }
 
 .close:hover,
@@ -152,60 +148,58 @@ button {
 
 input::-webkit-outer-spin-button,
 input::-webkit-inner-spin-button {
-    -webkit-appearance: none;
-    margin: 0;
+  -webkit-appearance: none;
+  margin: 0;
 }
 
 #add-timer-container {
-	display: flex;
-	flex-direction: row;
-	margin-bottom: 20px;
+  display: flex;
+  flex-direction: row;
+  margin-bottom: 20px;
 }
 
-input[type='text'],
-input[type='number'] {
-	display: block;
-	padding: 10px 5px 10px 5px;
-	box-sizing: border-box;
-	margin-right: 10px;
-	-moz-appearance: textfield;
-	border: 1px solid rgba(0, 0, 0, 0.3);
-	border-radius: 5px;
+input[type="text"],
+input[type="number"] {
+  display: block;
+  padding: 10px 5px 10px 5px;
+  box-sizing: border-box;
+  margin-right: 10px;
+  -moz-appearance: textfield;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+  border-radius: 5px;
 }
 
-input[type='text'] {
-	width: 100%;
+input[type="text"] {
+  width: 100%;
 }
 
-input[type='number'] {
-	width: 100px;
+input[type="number"] {
+  width: 100px;
 }
 
 #add-button {
-	box-sizing: border-box;
-	width: 220px;
+  box-sizing: border-box;
+  width: 220px;
+  box-shadow: none;
 }
 
 button:hover {
-	cursor: pointer;
-	opacity: 0.5;
+  cursor: pointer;
+  opacity: 0.5;
 }
 
 input:hover,
 input:focus,
 select:focus,
 textarea:focus {
-	outline: 0;
-	border-color: #7957FB;
-	box-shadow: 0 0 5px 1px rgba(121, 87, 251, 0.3);
+  outline: 0;
+  border-color: #7957fb;
+  box-shadow: 0 0 5px 1px rgba(121, 87, 251, 0.3);
 }
 
 #add-button:focus {
-	outline: 0;
-	border-color: #7957FB;
-	box-shadow: 0 0 5px 2px rgba(121, 87, 251, 0.5);
+  outline: 0;
 }
-
 
 /*** Toggle switch CSS from:
  https://www.w3schools.com/howto/tryit.asp?filename=tryhow_css_switch ***/
@@ -217,7 +211,7 @@ textarea:focus {
   height: 20px;
 }
 
-.switch input { 
+.switch input {
   opacity: 0;
   width: 0;
   height: 0;
@@ -231,8 +225,8 @@ textarea:focus {
   right: 0;
   bottom: 0;
   background-color: grey;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -244,12 +238,12 @@ textarea:focus {
   left: 4px;
   bottom: 4px;
   background-color: white;
-  -webkit-transition: .4s;
-  transition: .4s;
+  -webkit-transition: 0.4s;
+  transition: 0.4s;
 }
 
 input:checked + .slider {
-  background-color: #58B3E5;
+  background-color: #58b3e5;
   box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.3);
 }
 
@@ -263,58 +257,57 @@ input:checked + .slider:before {
   transform: translateX(14px);
 }
 
-/* Rounded sliders */
 .slider.round {
-	border-radius: 34px;
+  border-radius: 34px;
 }
-  
+
 .slider.round:before {
-	border-radius: 50%;
+  border-radius: 50%;
 }
 
 /* https://www.w3schools.com/howto/tryit.asp?filename=tryhow_js_accordion */
 .accordion {
-	/* background-color: #F6F6F6; */
-	background: white;
-	cursor: pointer;
-	padding: 15px;
-	border: none;
-	text-align: left;
-	outline: none;
-	font-size: 15px;
-	transition: 0.4s;
-	display: flex;
-	flex-direction: row;
-	justify-content: space-between;
-	vertical-align: middle;
+  background: white;
+  cursor: pointer;
+  padding: 15px;
+  border: none;
+  text-align: left;
+  outline: none;
+  font-size: 15px;
+  transition: 0.4s;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  vertical-align: middle;
 }
 
-.active-faq, .accordion:hover {
-	background-color: white;
-	font-weight: bold;
+.active-faq,
+.accordion:hover {
+  background-color: white;
+  font-weight: bold;
 }
 
 .panel {
-	padding: 0 20px 20px 20px;
-	display: none;
-	background-color: white;
-	font-size: 14px;
-	color: #444;
+  padding: 0 20px 20px 20px;
+  display: none;
+  background-color: white;
+  font-size: 14px;
+  color: #444;
 }
 
 .help-container {
-	box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.4);
-	margin-bottom: 10px;
-	box-sizing: border-box;
+  box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.4);
+  margin-bottom: 10px;
+  box-sizing: border-box;
 }
 
 .dropdown-icon {
-	float: right;
-	font-weight: bold;
-	font-size: 15px;
-	vertical-align: middle;
+  float: right;
+  font-weight: bold;
+  font-size: 15px;
+  vertical-align: middle;
 }
 
 .disabled {
-	opacity: 0.3;
+  opacity: 0.3;
 }

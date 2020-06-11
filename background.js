@@ -3,7 +3,8 @@ var activeHostname;
 
 // update time
 function updateTimer() {
-    if (!(activeHostname in timers)) {
+    if (!(activeHostname in timers) || !timers[activeHostname].status) {
+		chrome.browserAction.setBadgeText({text: ''}, () => {});
 		setTimeout(updateTimer, 1000);
         return;
     }
@@ -15,19 +16,23 @@ function updateTimer() {
 			} 
 			chrome.tabs.update(tab.id, {url: "blocked.html"});
 		});
-		chrome.storage.local.set({'timers': JSON.stringify(timers)}, () => {});
 		setTimeout(updateTimer, 1000);
 		return;
     }
 
 	let hostnameInfo = timers[activeHostname];
-    if (hostnameInfo.status) {
-		if (hostnameInfo.remaining == 0) {
-            alert(`Ran out of time at ${activeHostname}`);
-			hostnameInfo.blocked = true;
-        } else {
-            hostnameInfo.remaining--;
-        }
+	if (hostnameInfo.remaining == 0) {
+		var options = {
+			type: "basic",
+			title: "ManageMe",
+			message: `Ran out of time at ${activeHostname}`,
+			iconUrl: "images/icon48.png",
+			priority: 2
+		};
+		chrome.notifications.create("", options, (notificationId) => {});
+		hostnameInfo.blocked = true;
+	} else {
+		hostnameInfo.remaining--;
 	}
 	chrome.storage.local.set({'timers': JSON.stringify(timers)}, () => {});
 	setBadge(hostnameInfo.remaining);
@@ -86,8 +91,7 @@ function getDomain(url) {
 		});
 
 		for (optionsWin of optionsWindows) {
-			optionsWin.closeOptions();
-			optionsWin.activeOptions();
+			optionsWin.refreshTimers();
 		}
 	} catch {
 		// ignore case where the options page is not open
@@ -107,9 +111,10 @@ function getActiveHostname() {
         function(tabs){
             // get current URL and parse out hostname
             var currentUrl = tabs[0].url;
-            var hostname = getDomain(currentUrl);
-			updateActiveHostname(hostname);
-			chrome.browserAction.setBadgeText({text: ''});
+			var hostname = getDomain(currentUrl);
+			chrome.browserAction.setBadgeText({text: ''}, function() {
+				updateActiveHostname(hostname);
+			});
         }
     );
 }
@@ -124,7 +129,8 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
 		var hostname = getDomain(changeInfo.url);
         updateActiveHostname(hostname);
     }
-});
+})
+
 
 // listener for when tab changes
 chrome.tabs.onActivated.addListener((activeInfo) => {
@@ -136,7 +142,7 @@ chrome.runtime.onInstalled.addListener((details) => {
 	chrome.storage.local.get('timers', function(result) {
 		timers = JSON.parse(result.timers);
 		chrome.tabs.create({url: 'options.html' });
-    	getActiveHostname();
+		getActiveHostname();
 	});
 });
 
@@ -150,7 +156,6 @@ function createMidnightAlarm() {
 
 // listens for alarm and resets it for next midnight
 chrome.alarms.onAlarm.addListener(() => {
-    // alert("alarm");
     resetTimers();
     chrome.alarms.clearAll(() => {
         createMidnightAlarm();
