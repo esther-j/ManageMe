@@ -8,18 +8,10 @@ function activeOptions() {
 
     $('#main').append(
         `<div id="add-timer-container">
-            <input type="text" id="hostname-input" name="hostname" placeholder="Website" required>
-            <input type="number" id="time-input" name="time" placeholder="Minutes" required>
+            <input type="text" id="hostname-input" name="hostname" placeholder="Website" title="Website link" required>
+            <input type="number" id="time-input" name="time" placeholder="Minutes" title="Time limit" required>
             <button id="add-button">+ Add timer</button>
-        </div>
-        <div id='timer-heading-container' class='timer-format'>
-            <div class='left-align'>Website</div>
-            <div>Remaining</div>
-            <div>Time Limit</div>
-            <div>Off/On</div>
-            <div> </div>
-        </div>
-        <div id='timer-container'></div>`
+        </div>`
     );
     $('#add-button').click(checkResponse);
     
@@ -31,22 +23,91 @@ function activeOptions() {
 }
 
 function blankSplash() {
-    $('#timer-container').append(
+    $('#timer-heading-container, #timer-container').remove();
+    $('#main').append(
         `<div id="blank">You don't have any timers!</div>`
     );
 }
 
 function closeOptions() {
+    if ($('#blank').length) {
+        $('#blank').remove();
+    }
     $('#add-button').remove();
     $('#timer-heading-container').remove();
     $('#add-timer-container').remove();
     $('#timer-container').remove();
 }
 
-function activeAbout() {
-    location.hash = 'about';
+function closeHelp() {
+    $('#help-content').remove();
+}
 
-    $('#title').html('About');
+function activeHelp() {
+    location.hash = 'help';
+
+    $('#title').html('Help/FAQ');
+    $('#main').append(
+        `<div id="help-content">
+            <div class="help-container">
+                <div class="accordion">
+                    <div>What should I put in the 'Website' and 'Minutes' text inputs?</div>
+                    <div class="dropdown-icon">+</div>
+                </div>
+                <div class="panel">
+                    &#8226; <b>Website</b>: URL (preferably just the domain) of the site
+                    you would like to be time-managed (e.g. google.com, wikipedia.org)
+                    <br><br>
+                    &#8226; <b>Minutes</b>: amount of minutes daily allowed on the site before it
+                    is blocked (must be an integer)
+                </div>
+            </div>
+            <div class="help-container">
+                <div class="accordion">
+                    <div>Why did my website input get shortened?</div>
+                    <div class="dropdown-icon">+</div>
+                </div>
+                <div class="panel">
+                    ManageMe only tracks websites by their domain, so website inputs
+                    are automatically adjusted to just their domain
+                </div>
+            </div>
+            <div class="help-container">
+                <div class="accordion">
+                    <div>Can I block specific websites instead of the entire domain?</div>
+                    <div class="dropdown-icon">+</div>
+                </div>
+                <div class="panel">
+                    Unfortunately, that is not a feature as of now
+                </div>
+            </div>
+            <div class="help-container">
+                <div class="accordion">
+                    <div>When do the timers reset?</div>
+                    <div class="dropdown-icon">+</div>
+                </div>
+                <div class="panel">
+                    The timers reset at midnight (currently not adjustable)
+                </div>
+            </div>
+            <div class="help-container">
+                <div class="accordion">
+                    <div>How can I block a website entirely?</div>
+                    <div class="dropdown-icon">+</div>
+                </div>
+                <div class="panel">
+                    Set the 'Minutes' input to 0
+                </div>
+            </div>
+        </div>`
+    );
+
+    $('.accordion').click(function() {
+        $(this).toggleClass('active-faq');
+        $(this).next().slideToggle();
+        var $icon = $(this).children('.dropdown-icon');
+        $icon.html() == '+' ? $icon.html('&#8722;') : $icon.html('+');
+    });
 }
 
 function checkResponse() {
@@ -103,7 +164,7 @@ function getDomain(url) {
 }
 
 function newTimer(hostname, time) {
-    // time *= 60;
+    time *= 60;
     timers[hostname] = {
         limit: time,
         remaining: time,
@@ -144,14 +205,31 @@ function createTimerBlock(hostname) {
     return $timerBlock;
 }
 
+function makeTimerContainer() {
+    $('#main').append(
+        `<div id='timer-heading-container' class='timer-format'>
+            <div class='left-align'>Website</div>
+            <div>Remaining</div>
+            <div>Time Limit</div>
+            <div>Off/On</div>
+            <div> </div>
+        </div>
+        <div id='timer-container'></div>`
+    );
+}
+
 function addTimerBlock(timerBlock) {
     if ($('#blank').length != 0) {
         $('#blank').remove();
+        makeTimerContainer();
     }
+
     $('#timer-container').append(timerBlock);
 }
 
 function addExistingTimers() {
+    makeTimerContainer();
+
     for (timer in timers) {
         let timerObj = timers[timer];
         addTimerBlock(createTimerBlock(timer, timerObj.remaining, timerObj.limit, timerObj.status));
@@ -203,11 +281,13 @@ function toggleTab() {
 
     if (active == 'nav-options') {
         closeOptions();
+    } else if (active == 'nav-help') {
+        closeHelp();
     }
 
     if (selected == 'nav-options') {
         activeOptions();
-    } else if (selected == 'nav-about') {
-        activeAbout();
+    } else if (selected == 'nav-help') {
+        activeHelp();
     }
 }

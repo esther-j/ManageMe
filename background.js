@@ -3,7 +3,6 @@ var activeHostname;
 
 // update time
 function updateTimer() {
-	chrome.browserAction.setBadgeText({text: ''});
     if (!(activeHostname in timers)) {
 		setTimeout(updateTimer, 1000);
         return;
@@ -93,7 +92,8 @@ function getActiveHostname() {
             // get current URL and parse out hostname
             var currentUrl = tabs[0].url;
             var hostname = getDomain(currentUrl);
-            updateActiveHostname(hostname);
+			updateActiveHostname(hostname);
+			chrome.browserAction.setBadgeText({text: ''});
         }
     );
 }
