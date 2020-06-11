@@ -51,15 +51,28 @@ function activeHelp() {
         `<div id="help-content">
             <div class="help-container">
                 <div class="accordion">
+                    <div>What is ManageMe?</div>
+                    <div class="dropdown-icon">+</div>
+                </div>
+                <div class="panel">
+                    ManageMe is a chrome extension that allows you to time-manage 
+                    how much time you spend on websites. Simply add a website and 
+                    the number of minutes daily you will spend on the site. The 
+                    domain of that site will be blocked for the remainder of the 
+                    day once your limit is reached until the timers are reset at midnight.
+                </div>
+            </div>
+            <div class="help-container">
+                <div class="accordion">
                     <div>What should I put in the 'Website' and 'Minutes' text inputs?</div>
                     <div class="dropdown-icon">+</div>
                 </div>
                 <div class="panel">
                     &#8226; <b>Website</b>: URL (preferably just the domain) of the site
-                    you would like to be time-managed (e.g. google.com, wikipedia.org)
+                    you would like to be time-managed (e.g. google.com, wikipedia.org).
                     <br><br>
                     &#8226; <b>Minutes</b>: amount of minutes daily allowed on the site before it
-                    is blocked (must be an integer)
+                    is blocked (must be an integer).
                 </div>
             </div>
             <div class="help-container">
@@ -69,7 +82,7 @@ function activeHelp() {
                 </div>
                 <div class="panel">
                     ManageMe only tracks websites by their domain, so website inputs
-                    are automatically adjusted to just their domain
+                    are automatically adjusted to just their domain.
                 </div>
             </div>
             <div class="help-container">
@@ -78,7 +91,18 @@ function activeHelp() {
                     <div class="dropdown-icon">+</div>
                 </div>
                 <div class="panel">
-                    Unfortunately, that is not a feature as of now
+                    Unfortunately, that is not a feature as of now.
+                </div>
+            </div>
+            <div class="help-container">
+                <div class="accordion">
+                    <div>Why is the on/off button disabled and cancel button gone for a timer?</div>
+                    <div class="dropdown-icon">+</div>
+                </div>
+                <div class="panel">
+                    Timers that had a limit greater than 0 minutes are disabled 
+                    and no longer deletable once the remaining time is 0. <br>
+                    They will be enabled again at midnight when the timers are reset.
                 </div>
             </div>
             <div class="help-container">
@@ -87,7 +111,7 @@ function activeHelp() {
                     <div class="dropdown-icon">+</div>
                 </div>
                 <div class="panel">
-                    The timers reset at midnight (currently not adjustable)
+                    The timers reset at midnight (currently not adjustable).
                 </div>
             </div>
             <div class="help-container">
@@ -96,7 +120,8 @@ function activeHelp() {
                     <div class="dropdown-icon">+</div>
                 </div>
                 <div class="panel">
-                    Set the 'Minutes' input to 0
+                    Set the 'Minutes' input to 0.
+                    <i>Note: sites blocked in this fashion are pausable and deletable</i>
                 </div>
             </div>
         </div>`
@@ -164,7 +189,7 @@ function getDomain(url) {
 }
 
 function newTimer(hostname, time) {
-    time *= 60;
+    // time *= 60;
     timers[hostname] = {
         limit: time,
         remaining: time,
@@ -198,9 +223,16 @@ function createTimerBlock(hostname) {
         )
     ]);
 
-    $(`<div class='close'>&times;</div>`)
+    if (timerObj.remaining == 0 && timerObj.limit > 0) {
+        $checkbox.parent().addClass('disabled');
+        $checkbox.attr('disabled', true);
+    } else {
+        $(`<div class='close'>&times;</div>`)
         .click(deleteTimer)
         .appendTo($timerBlock);
+    }
+
+
 
     return $timerBlock;
 }
@@ -290,4 +322,9 @@ function toggleTab() {
     } else if (selected == 'nav-help') {
         activeHelp();
     }
+}
+
+function refreshOptions() {
+    closeOptions();
+    activeOptions();
 }

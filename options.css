@@ -314,3 +314,7 @@ input:checked + .slider:before {
 	font-size: 15px;
 	vertical-align: middle;
 }
+
+.disabled {
+	opacity: 0.3;
+}

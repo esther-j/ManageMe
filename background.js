@@ -76,9 +76,24 @@ function makeTimeNotification(remaining) {
 }
 
 function getDomain(url) {
+	try { 
+		var optionsWindows = chrome.extension.getViews({type: "tab"}).filter(
+			function(win) {
+				return win.location.href == url && 
+					win.location.pathname == "/options.html" && 
+					win.location.hash == "#main";
+		});
+
+		for (optionsWin of optionsWindows) {
+			optionsWin.closeOptions();
+			optionsWin.activeOptions();
+		}
+	} catch {
+		// ignore case where the options page is not open
+	}
 	var urlObj = new URL(url);
 	var hostname = urlObj.hostname;
-	var domain = psl.parse(hostname).domain;
+	var domain = psl.parse(hostname).domain;	
 
 	return domain ? domain : hostname;
 }
@@ -105,7 +120,7 @@ function updateActiveHostname(hostname) {
 // listener for when the url changes in active tab
 chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
     if (changeInfo.url) {
-        var hostname = getDomain(changeInfo.url);
+		var hostname = getDomain(changeInfo.url);
         updateActiveHostname(hostname);
     }
 });
