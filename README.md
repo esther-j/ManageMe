@@ -11,7 +11,11 @@ reliable yet flexible solution. Users can create timers for different domains,
 toggle their timers, and completely block them.
 
 ## Screenshots
+Options page:
 ![Options page](images/options-demo.png)
+
+
+Popup window:
 ![Popup example](images/popup-demo.png)
 
 ## Libraries Used
