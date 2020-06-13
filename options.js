@@ -8,11 +8,16 @@ function activeTimers() {
 
     $("#main").append(
         `<div id="add-timer-container">
-            <input type="text" id="hostname-input" name="hostname" placeholder="Website" title="Website link" required>
-            <input type="number" id="time-input" name="time" placeholder="Minutes" title="Time limit" required>
+            <input type="text" id="hostname-input" name="hostname" placeholder="Website" title="Website link">
+            <input type="number" id="time-input" name="time" placeholder="Minutes" title="Time limit">
             <button id="add-button">+ Add timer</button>
         </div>`
     );
+    $('#hostname-input, #time-input').keydown(function(event) {
+        if (event.key == 'Enter') {
+            checkResponse();
+        }
+    });
     $("#add-button").click(checkResponse);
 
     if (Object.keys(timers).length == 0) {
@@ -68,6 +73,17 @@ function activeHelp() {
             </div>
             <div class="help-container">
                 <div class="accordion">
+                    <div>What happens when a timer reaches its limit?</div>
+                    <div class="dropdown-icon">+</div>
+                </div>
+                <div class="panel">
+                    Timers that had a limit greater than 0 minutes are disabled 
+                    and no longer deletable once the remaining time is 0. <br>
+                    They will be enabled again at midnight when the timers are reset.
+                </div>
+            </div>
+            <div class="help-container">
+                <div class="accordion">
                     <div>Why did my website input get shortened?</div>
                     <div class="dropdown-icon">+</div>
                 </div>
@@ -83,17 +99,6 @@ function activeHelp() {
                 </div>
                 <div class="panel">
                     Unfortunately, that is not a feature as of now.
-                </div>
-            </div>
-            <div class="help-container">
-                <div class="accordion">
-                    <div>Why is the on/off button disabled and cancel button gone for a timer?</div>
-                    <div class="dropdown-icon">+</div>
-                </div>
-                <div class="panel">
-                    Timers that had a limit greater than 0 minutes are disabled 
-                    and no longer deletable once the remaining time is 0. <br>
-                    They will be enabled again at midnight when the timers are reset.
                 </div>
             </div>
             <div class="help-container">
@@ -194,7 +199,7 @@ function getDomain(url) {
 }
 
 function newTimer(hostname, time) {
-    // time *= 60;
+    time *= 60;
     timers[hostname] = {
         limit: time,
         remaining: time,

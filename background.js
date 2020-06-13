@@ -43,13 +43,12 @@ function updateTimer() {
 function setBadge(remainingTime) {
 	var badgeText;
 	if (remainingTime == 0) {
-		badgeText = ''
+		badgeText = '';
 	} else if ((hrs = Math.floor(remainingTime / 3600)) > 0) {
 		badgeText = `${hrs}hr`;
-	} else if ((min = Math.floor(remainingTime / 60)) > 60) {
-		badgeText = `${min}m`;
 	} else {
-		badgeText = `${remainingTime}s`;
+		var min = Math.floor(remainingTime / 60);
+		badgeText = `${min}m`;
 	}
 	chrome.browserAction.setBadgeText({text: badgeText});
 }
@@ -130,7 +129,6 @@ chrome.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {
         updateActiveHostname(hostname);
     }
 })
-
 
 // listener for when tab changes
 chrome.tabs.onActivated.addListener((activeInfo) => {

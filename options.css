@@ -12,18 +12,18 @@ a:visited {
 }
 
 #nav {
-  box-shadow: 0px 0px 12px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.2);
   position: fixed;
   float: left;
   box-sizing: border-box;
-  width: 250px;
+  width: 20em;
   height: 100%;
   background: rgba(121, 87, 251, 0.1);
 }
 
 #logo {
-  margin: 20px;
-  margin-bottom: 100px;
+  margin: 1.5em;
+  margin-bottom: 8em;
   display: block;
 }
 
@@ -32,7 +32,7 @@ a:visited {
   display: flex;
   align-items: center;
   width: 100%;
-  height: 50px;
+  height: 4em;
 }
 
 .nav-block:hover {
@@ -41,7 +41,7 @@ a:visited {
 
 .active {
   background: rgba(121, 87, 251, 0.1);
-  border-right: 5px solid rgba(121, 87, 251, 0.5);
+  border-right: 0.4em solid rgba(121, 87, 251, 0.5);
 }
 
 .active > div {
@@ -49,15 +49,15 @@ a:visited {
 }
 
 .nav-link {
-  margin-left: 15px;
+  margin-left: 1.5em;
   font-style: normal;
   color: black;
-  font-size: 14px;
+  font-size: 1.2em;
 }
 
 #main {
-  width: 800px;
-  margin: 100px 0 40px 300px;
+  width: 65em;
+  margin: 8em 0 3em 26em;
   position: absolute;
 }
 
@@ -70,28 +70,28 @@ button {
   background: rgba(121, 87, 251, 0.8);
   color: white;
   font-weight: bold;
-  border-radius: 20px;
+  border-radius: 1.4em;
   border: 0;
 }
 
 #title-container {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 10px;
+  margin-bottom: 0.5em;
 }
 
 #timer-heading-container > div {
   color: rgba(0, 0, 0, 0.4);
-  font-size: 12px;
+  font-size: 1em;
 }
 
 #blank {
   background: rgba(0, 0, 0, 0.04);
   width: 100%;
-  height: 450px;
-  border-radius: 15px;
-  font-size: 20px;
-  line-height: 500px;
+	height: 25em;
+  line-height: 25em;
+  border-radius: 1em;
+  font-size: 1.6em;
   text-align: center;
   color: rgba(0, 0, 0, 0.6);
 }
@@ -100,10 +100,10 @@ button {
   background: #f6f6f6;
   display: flex;
   align-items: center;
-  margin-bottom: 5px;
+  margin-bottom: 0.5em;
   width: 100%;
-  height: 40px;
-  border-radius: 20px;
+  height: 3.5em;
+  border-radius: 2em;
   transition: transform 0.2s;
 }
 
@@ -124,8 +124,8 @@ button {
 
 .timer-format > div {
   color: rgba(0, 0, 0, 0.8);
-  font-size: 14px;
-  margin: 5px 20px 5px 20px;
+  font-size: 1.2em;
+  margin: 0.5em 1.2em;
   text-align: center;
 }
 
@@ -135,8 +135,8 @@ button {
 
 .close {
   color: #b0b0b0 !important;
-  margin: 5px 5px 5px 0 !important;
-  font-size: 20px !important;
+  margin: 0.5em 0.5em 0.5em 0 !important;
+  font-size: 1.5em !important;
 }
 
 .close:hover,
@@ -155,18 +155,18 @@ input::-webkit-inner-spin-button {
 #add-timer-container {
   display: flex;
   flex-direction: row;
-  margin-bottom: 20px;
+  margin-bottom: 1.4em;
 }
 
 input[type="text"],
 input[type="number"] {
   display: block;
-  padding: 10px 5px 10px 5px;
+  padding: 0.7em 0.4em;
   box-sizing: border-box;
-  margin-right: 10px;
+  margin-right: 0.6em;
   -moz-appearance: textfield;
-  border: 1px solid rgba(0, 0, 0, 0.3);
-  border-radius: 5px;
+  border: 0.1em solid rgba(0, 0, 0, 0.3);
+  border-radius: 0.4em;
 }
 
 input[type="text"] {
@@ -174,12 +174,12 @@ input[type="text"] {
 }
 
 input[type="number"] {
-  width: 100px;
+  width: 8em;
 }
 
 #add-button {
   box-sizing: border-box;
-  width: 220px;
+  width: 16em;
   box-shadow: none;
 }
 
@@ -194,7 +194,7 @@ select:focus,
 textarea:focus {
   outline: 0;
   border-color: #7957fb;
-  box-shadow: 0 0 5px 1px rgba(121, 87, 251, 0.3);
+  box-shadow: 0 0 0.2em 0.1em rgba(121, 87, 251, 0.3);
 }
 
 #add-button:focus {
@@ -269,11 +269,11 @@ input:checked + .slider:before {
 .accordion {
   background: white;
   cursor: pointer;
-  padding: 15px;
+  padding: 1em;
   border: none;
   text-align: left;
   outline: none;
-  font-size: 15px;
+  font-size: 1.25em;
   transition: 0.4s;
   display: flex;
   flex-direction: row;
@@ -288,23 +288,23 @@ input:checked + .slider:before {
 }
 
 .panel {
-  padding: 0 20px 20px 20px;
+  padding: 0 1.2em 1.2em 1.2em;
   display: none;
   background-color: white;
-  font-size: 14px;
+  font-size: 1.2em;
   color: #444;
 }
 
 .help-container {
-  box-shadow: 1px 2px 5px 0px rgba(0, 0, 0, 0.4);
-  margin-bottom: 10px;
+  box-shadow: 0 0.15em 0.4em 0 rgba(0, 0, 0, 0.4);
+  margin-bottom: 0.8em;
   box-sizing: border-box;
 }
 
 .dropdown-icon {
   float: right;
   font-weight: bold;
-  font-size: 15px;
+  font-size: 1.1em;
   vertical-align: middle;
 }
 
