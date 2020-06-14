@@ -1,3 +1,4 @@
+![Splash page](images/splash-promo.jpg)
 # ManageMe
 
 ManageMe is a Google Chrome extension that time-manages the daily amount of time
@@ -13,7 +14,6 @@ toggle their timers, and completely block them.
 ## Screenshots
 Options page:
 ![Options page](images/options-demo.png)
-
 
 Popup window:
 ![Popup example](images/popup-demo.png)
