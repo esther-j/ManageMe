@@ -25,3 +25,9 @@ Popup window:
 ## Other Credits
 * [Blocked page splash screen photo by Dirk Scheuble on Unsplash](https://unsplash.com/photos/MpN-RvJ4lRc)
 * [Settings icon by Google on Flaticon](https://www.flaticon.com)
+
+## Potential Todos
+* Customizable reset time
+* Enable mode
+* More flexible site blocking (i.e. include subdomains)
+* Password
